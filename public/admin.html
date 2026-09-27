@@ -1,0 +1,4363 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>LABCONSULT - Admin Dashboard</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      color: #1f2937;
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    /* =========================================
+       NAVBAR
+    ========================================= */
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #111827;
+      color: white;
+      padding: 14px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.12);
+    }
+
+    .nav-brand {
+      font-size: 20px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: #d1d5db;
+      text-decoration: none;
+      padding: 9px 12px;
+      border-radius: 7px;
+      font-size: 14px;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .nav-links a:hover {
+      background: #374151;
+      color: white;
+    }
+
+    /* =========================================
+       LAYOUT
+    ========================================= */
+
+    .container {
+      max-width: 1320px;
+      margin: 30px auto;
+      padding: 0 20px 60px;
+    }
+
+    .header {
+      margin-bottom: 25px;
+      scroll-margin-top: 110px;
+    }
+
+    .header h1 {
+      font-size: 30px;
+      line-height: 1.2;
+      margin-bottom: 8px;
+      color: #111827;
+    }
+
+    .header p {
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    section {
+      scroll-margin-top: 110px;
+    }
+
+    /* =========================================
+       ERROR / INFO
+    ========================================= */
+
+    .error-box {
+      display: none;
+      margin-bottom: 25px;
+      padding: 15px 16px;
+      background: #fff2f2;
+      border: 1px solid #efc3c3;
+      border-radius: 9px;
+      color: #a83a3a;
+      font-size: 14px;
+    }
+
+    .error-box.show {
+      display: block;
+    }
+
+    .info-box {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 9px;
+      padding: 12px 15px;
+      margin-bottom: 18px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    /* =========================================
+       STATISTICS
+    ========================================= */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 22px;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .stat-card h3 {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .stat-card .number {
+      font-size: 30px;
+      line-height: 1;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    /* =========================================
+       SECTION
+    ========================================= */
+
+    .section {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .section-header h2 {
+      font-size: 22px;
+      line-height: 1.2;
+      color: #111827;
+    }
+
+    .section-description {
+      margin-top: 5px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    /* =========================================
+       BUTTONS
+    ========================================= */
+
+    button {
+      border-radius: 7px;
+      padding: 10px 15px;
+      font-size: 14px;
+      transition: 0.15s ease;
+    }
+
+    .btn-primary {
+      background: #111827;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #1f2937;
+    }
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .btn-secondary:hover {
+      background: #d1d5db;
+    }
+
+    .btn-edit {
+      background: #e5e7eb;
+      color: #111827;
+      padding: 7px 11px;
+    }
+
+    .btn-edit:hover {
+      background: #d1d5db;
+    }
+
+    .btn-delete {
+      background: #fee2e2;
+      color: #b91c1c;
+      padding: 7px 11px;
+    }
+
+    .btn-delete:hover {
+      background: #fecaca;
+    }
+
+    .btn-approve {
+      background: #dcfce7;
+      color: #166534;
+      padding: 7px 11px;
+    }
+
+    .btn-approve:hover {
+      background: #bbf7d0;
+    }
+
+    .btn-reject {
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 7px 11px;
+    }
+
+    .btn-reject:hover {
+      background: #fecaca;
+    }
+
+    .btn-complete {
+      background: #e0e7ff;
+      color: #3730a3;
+      padding: 7px 11px;
+    }
+
+    .btn-complete:hover {
+      background: #c7d2fe;
+    }
+
+    .btn-notes {
+      background: #f3f4f6;
+      color: #374151;
+      padding: 7px 11px;
+    }
+
+    .btn-notes:hover {
+      background: #e5e7eb;
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    /* =========================================
+       FILTERS
+    ========================================= */
+
+    .consultation-toolbar {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) 180px auto;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .toolbar-input,
+    .toolbar-select {
+      width: 100%;
+      min-width: 0;
+      padding: 11px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      background: white;
+      color: #111827;
+      outline: none;
+    }
+
+    .toolbar-input:focus,
+    .toolbar-select:focus,
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #64748b;
+      box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.12);
+    }
+
+    .result-count {
+      color: #6b7280;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    /* =========================================
+       TABLES
+    ========================================= */
+
+    .table-wrapper {
+      overflow-x: auto;
+      width: 100%;
+      border: 1px solid #eef0f3;
+      border-radius: 9px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+    }
+
+    th,
+    td {
+      padding: 13px 12px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      font-size: 13px;
+      color: #6b7280;
+      background: #f9fafb;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+
+    td {
+      font-size: 14px;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    tbody tr:hover {
+      background: #fafafa;
+    }
+
+    td strong {
+      display: block;
+      margin-bottom: 2px;
+      color: #111827;
+    }
+
+    small {
+      display: block;
+      color: #6b7280;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .table-users {
+      min-width: 800px;
+    }
+
+    .table-practicals {
+      min-width: 760px;
+    }
+
+    .table-chapters {
+      min-width: 900px;
+    }
+
+    .table-assignments {
+      min-width: 850px;
+    }
+
+    /* =========================================
+       CONSULTATION TABLE
+    ========================================= */
+
+    .consultations-table {
+      min-width: 1180px;
+    }
+
+    .consultations-table th:nth-child(1) {
+      width: 55px;
+    }
+
+    .consultations-table th:nth-child(2) {
+      width: 155px;
+    }
+
+    .consultations-table th:nth-child(3) {
+      width: 180px;
+    }
+
+    .consultations-table th:nth-child(4) {
+      width: 145px;
+    }
+
+    .consultations-table th:nth-child(5) {
+      width: 145px;
+    }
+
+    .consultations-table th:nth-child(6) {
+      width: 310px;
+    }
+
+    .consultations-table th:nth-child(7) {
+      width: 105px;
+    }
+
+    .consultations-table th:nth-child(8) {
+      width: 175px;
+    }
+
+    .consultations-table th:last-child,
+    .consultations-table td:last-child {
+      position: sticky;
+      right: 0;
+      background: white;
+      box-shadow: -5px 0 10px rgba(17, 24, 39, 0.06);
+      z-index: 2;
+    }
+
+    .consultations-table th:last-child {
+      background: #f9fafb;
+      z-index: 3;
+    }
+
+    .consultation-detail {
+      max-width: 100%;
+      line-height: 1.55;
+    }
+
+    .consultation-detail p {
+      margin-top: 7px;
+      color: #4b5563;
+      overflow-wrap: anywhere;
+    }
+
+    .detail-meta {
+      margin-top: 8px;
+      color: #6b7280;
+      font-size: 12px;
+    }
+
+    .notes-preview {
+  margin-top: 5px;
+  padding: 4px 7px;
+  background: #f8fafc;
+  border-left: 2px solid #cbd5e1;
+  border-radius: 4px;
+  color: #6b7280;
+  font-size: 11px;
+  line-height: 1.3;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+
+  max-height: 30px;
+  overflow: hidden;
+}
+
+.notes-preview strong {
+  display: inline;
+  margin: 0;
+  font-size: 11px;
+  color: #6b7280;
+}
+
+    .attachment-label {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 5px 8px;
+      border-radius: 6px;
+      background: #f3f4f6;
+      color: #4b5563;
+      font-size: 12px;
+    }
+
+    /* =========================================
+       BADGES
+    ========================================= */
+
+    .badge {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .badge-praktikan {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .badge-asisten {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .badge-admin {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .badge-pending {
+      background: #fff4dc;
+      color: #9a6700;
+    }
+
+    .badge-approved {
+      background: #e8f6ed;
+      color: #237a42;
+    }
+
+    .badge-rejected {
+      background: #fdecec;
+      color: #a83a3a;
+    }
+
+    .badge-completed {
+      background: #e7eefc;
+      color: #3159a6;
+    }
+
+    .badge-cancelled {
+      background: #edf0f4;
+      color: #687286;
+    }
+
+    /* =========================================
+       EMPTY / LOADING
+    ========================================= */
+
+    .empty,
+    .loading {
+      text-align: center !important;
+      padding: 32px !important;
+      color: #6b7280;
+    }
+
+    /* =========================================
+       MODAL
+    ========================================= */
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(15, 23, 42, 0.52);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 520px;
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 16px 50px rgba(15, 23, 42, 0.2);
+    }
+
+    .modal-box h2 {
+      margin-bottom: 8px;
+      color: #111827;
+    }
+
+    .modal-box > p {
+      margin-bottom: 20px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 7px;
+      color: #111827;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 7px;
+      font-size: 14px;
+      font-family: inherit;
+      background: white;
+      color: #111827;
+      outline: none;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 130px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .message {
+      margin-top: 12px;
+      min-height: 20px;
+      font-size: 14px;
+    }
+
+    .message.success {
+      color: #15803d;
+    }
+
+    .message.error {
+      color: #dc2626;
+    }
+
+    .message.info {
+      color: #3159a6;
+    }
+
+    /* =========================================
+       RESPONSIVE
+    ========================================= */
+
+    @media (max-width: 1100px) {
+      .stats {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      /*
+        Consultation table berubah menjadi card.
+        Ini mengatasi masalah screenshot:
+        Detail tidak lagi terlalu sempit dan
+        Aksi tidak terpotong.
+      */
+      .consultations-wrapper {
+        overflow: visible;
+        border: 0;
+      }
+
+      .consultations-table {
+        min-width: 0;
+        width: 100%;
+        display: block;
+      }
+
+      .consultations-table thead {
+        display: none;
+      }
+
+      .consultations-table tbody,
+      .consultations-table tr,
+      .consultations-table td {
+        display: block;
+        width: 100%;
+      }
+
+      .consultations-table tbody {
+        display: grid;
+        gap: 14px;
+      }
+
+      .consultations-table tbody tr {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .consultations-table tbody tr:hover {
+        background: white;
+      }
+
+      .consultations-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #eef0f3;
+      }
+
+      .consultations-table td:last-child {
+        position: static;
+        box-shadow: none;
+        background: white;
+        z-index: auto;
+      }
+
+      .consultations-table td:last-child {
+        border-bottom: 0;
+      }
+
+      .consultations-table td::before {
+        content: attr(data-label);
+        display: block;
+        margin-bottom: 5px;
+        color: #6b7280;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+
+      .consultations-table td[data-label="ID"] {
+        background: #f9fafb;
+      }
+
+      .consultations-table td[data-label="Detail"] {
+        padding-top: 15px;
+        padding-bottom: 15px;
+      }
+
+      .consultation-detail {
+        max-width: none;
+      }
+
+      .consultation-toolbar {
+        grid-template-columns: 1fr 170px auto;
+      }
+    }
+
+    @media (max-width: 900px) {
+      nav {
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        width: 100%;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .consultation-toolbar {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .consultation-toolbar .btn-secondary {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 650px) {
+      nav {
+        padding: 14px 18px;
+      }
+
+      .nav-brand {
+        font-size: 18px;
+      }
+
+      .nav-links {
+        gap: 4px;
+      }
+
+      .nav-links a {
+        padding: 8px 9px;
+        font-size: 13px;
+      }
+
+      .container {
+        margin: 20px auto;
+        padding: 0 14px 40px;
+      }
+
+      .header h1 {
+        font-size: 25px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .stat-card {
+        padding: 18px;
+      }
+
+      .section {
+        padding: 17px;
+        border-radius: 10px;
+      }
+
+      .section-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .section-header .btn-primary,
+      .section-header .btn-secondary {
+        width: 100%;
+      }
+
+      .consultation-toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .consultation-toolbar .btn-secondary {
+        grid-column: auto;
+      }
+
+      .modal {
+        padding: 12px;
+      }
+
+      .modal-box {
+        padding: 20px;
+        max-height: 92vh;
+      }
+
+      .modal-actions {
+        flex-direction: column-reverse;
+      }
+
+      .modal-actions button {
+        width: 100%;
+      }
+
+      .button-group {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .button-group button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================================
+       NAVBAR
+  ========================================== -->
+
+  <nav>
+    <div class="nav-brand">
+      LABCONSULT Admin
+    </div>
+
+    <div class="nav-links">
+      <a href="#dashboard">Dashboard</a>
+      <a href="#pengguna">Pengguna</a>
+      <a href="#praktikum">Praktikum</a>
+      <a href="#bab">BAB</a>
+      <a href="#asisten">Asisten</a>
+      <a href="#konsultasi">Konsultasi</a>
+      <a href="#" id="logout-link">Logout</a>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <div class="header" id="dashboard">
+      <h1 id="admin-greeting">
+        Admin Dashboard
+      </h1>
+
+      <p>
+        Kelola pengguna, praktikum, BAB,
+        penugasan Asisten, dan monitoring konsultasi LABCONSULT.
+      </p>
+    </div>
+
+    <!-- =========================================
+         ERROR
+    ========================================== -->
+
+    <div id="error-box" class="error-box"></div>
+
+    <!-- =========================================
+         STATISTICS
+    ========================================== -->
+
+    <div class="stats">
+
+      <div class="stat-card">
+        <h3>Total Pengguna</h3>
+        <div class="number" id="total-users">0</div>
+      </div>
+
+      <div class="stat-card">
+        <h3>Praktikan</h3>
+        <div class="number" id="total-praktikan">0</div>
+      </div>
+
+      <div class="stat-card">
+        <h3>Asisten</h3>
+        <div class="number" id="total-asisten">0</div>
+      </div>
+
+      <div class="stat-card">
+        <h3>Praktikum</h3>
+        <div class="number" id="total-praktikum">0</div>
+      </div>
+
+      <div class="stat-card">
+        <h3>BAB</h3>
+        <div class="number" id="total-bab">0</div>
+      </div>
+
+    </div>
+
+    <!-- =========================================
+         PENGGUNA
+    ========================================== -->
+
+    <section class="section" id="pengguna">
+
+      <div class="section-header">
+        <div>
+          <h2>Kelola Pengguna</h2>
+          <p class="section-description">
+            Kelola akun Praktikan, Asisten, dan Admin.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="btn-primary"
+          id="add-user-button"
+        >
+          + Tambah Pengguna
+        </button>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="table-users">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>NIM</th>
+              <th>Nama</th>
+              <th>Role</th>
+              <th>Dibuat</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+
+          <tbody id="users-table-body">
+            <tr>
+              <td colspan="6" class="loading">
+                Memuat data...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- =========================================
+         PRAKTIKUM
+    ========================================== -->
+
+    <section class="section" id="praktikum">
+
+      <div class="section-header">
+        <div>
+          <h2>Kelola Praktikum</h2>
+          <p class="section-description">
+            Tambah dan lihat data praktikum.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="btn-primary"
+          id="add-practical-button"
+        >
+          + Tambah Praktikum
+        </button>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="table-practicals">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nama Praktikum</th>
+              <th>Deskripsi</th>
+              <th>Dibuat</th>
+            </tr>
+          </thead>
+
+          <tbody id="practicals-table-body">
+            <tr>
+              <td colspan="4" class="loading">
+                Memuat data praktikum...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- =========================================
+         BAB
+    ========================================== -->
+
+    <section class="section" id="bab">
+
+      <div class="section-header">
+        <div>
+          <h2>Kelola BAB</h2>
+          <p class="section-description">
+            Setiap BAB terhubung ke satu Praktikum.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="btn-primary"
+          id="add-chapter-button"
+        >
+          + Tambah BAB
+        </button>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="table-chapters">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Praktikum</th>
+              <th>BAB</th>
+              <th>Deskripsi</th>
+              <th>Dibuat</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+
+          <tbody id="chapters-table-body">
+            <tr>
+              <td colspan="6" class="loading">
+                Memuat data BAB...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- =========================================
+         ASISTEN
+    ========================================== -->
+
+    <section class="section" id="asisten">
+
+      <div class="section-header">
+        <div>
+          <h2>Penugasan Asisten</h2>
+          <p class="section-description">
+            Tentukan Asisten yang menangani setiap Praktikum.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="btn-primary"
+          id="add-assignment-button"
+        >
+          + Tugaskan Asisten
+        </button>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="table-assignments">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>NIM Asisten</th>
+              <th>Nama Asisten</th>
+              <th>Praktikum</th>
+              <th>Dibuat</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+
+          <tbody id="assistant-practicals-table-body">
+            <tr>
+              <td colspan="6" class="loading">
+                Memuat data penugasan...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- =========================================
+         KONSULTASI
+    ========================================== -->
+
+    <section class="section" id="konsultasi">
+
+      <div class="section-header">
+        <div>
+          <h2>Monitoring Konsultasi</h2>
+          <p class="section-description">
+            Semua konsultasi LABCONSULT yang tersimpan di database.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="btn-secondary"
+          id="refresh-consultations-button"
+        >
+          Refresh
+        </button>
+      </div>
+
+      <div class="info-box">
+        Admin dapat memantau seluruh konsultasi.
+        Perubahan status tetap mengikuti validasi backend.
+      </div>
+
+      <div class="consultation-toolbar">
+
+        <input
+          type="search"
+          id="consultation-search"
+          class="toolbar-input"
+          placeholder="Cari nama, NIM, praktikum, BAB, topik..."
+          autocomplete="off"
+        >
+
+        <select
+          id="consultation-status-filter"
+          class="toolbar-select"
+        >
+          <option value="all">Semua Status</option>
+          <option value="pending">Menunggu</option>
+          <option value="approved">Disetujui</option>
+          <option value="rejected">Ditolak</option>
+          <option value="completed">Selesai</option>
+          <option value="cancelled">Dibatalkan</option>
+        </select>
+
+        <button
+          type="button"
+          class="btn-secondary"
+          id="reset-consultation-filter"
+        >
+          Reset Filter
+        </button>
+
+      </div>
+
+      <div
+        class="result-count"
+        id="consultation-result-count"
+      >
+        Memuat konsultasi...
+      </div>
+
+      <div class="table-wrapper consultations-wrapper">
+
+        <table class="consultations-table">
+
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Praktikan</th>
+              <th>Praktikum / BAB</th>
+              <th>Asisten</th>
+              <th>Jadwal</th>
+              <th>Detail</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+
+          <tbody id="consultations-table-body">
+            <tr>
+              <td colspan="8" class="loading">
+                Memuat konsultasi...
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================
+       MODAL TAMBAH USER
+  ========================================== -->
+
+  <div class="modal" id="add-user-modal">
+
+    <div class="modal-box">
+
+      <h2>Tambah Pengguna</h2>
+
+      <p>
+        Buat akun Praktikan, Asisten, atau Admin.
+      </p>
+
+      <form id="add-user-form">
+
+        <div class="form-group">
+          <label for="add-nim">NIM</label>
+
+          <input
+            type="text"
+            id="add-nim"
+            maxlength="30"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="add-name">Nama</label>
+
+          <input
+            type="text"
+            id="add-name"
+            maxlength="100"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="add-password">Password</label>
+
+          <input
+            type="password"
+            id="add-password"
+            minlength="6"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="add-role">Role</label>
+
+          <select id="add-role" required>
+            <option value="praktikan">Praktikan</option>
+            <option value="asisten">Asisten</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+
+        <div id="add-user-message" class="message"></div>
+
+        <div class="modal-actions">
+          <button
+            type="button"
+            class="btn-secondary"
+            data-close-modal="add-user-modal"
+          >
+            Batal
+          </button>
+
+          <button
+            type="submit"
+            class="btn-primary"
+          >
+            Simpan Pengguna
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- =========================================
+       MODAL EDIT USER
+  ========================================== -->
+
+  <div class="modal" id="edit-user-modal">
+
+    <div class="modal-box">
+
+      <h2>Edit Pengguna</h2>
+
+      <p>
+        Ubah nama atau role pengguna.
+      </p>
+
+      <form id="edit-user-form">
+
+        <input
+          type="hidden"
+          id="edit-user-id"
+        >
+
+        <div class="form-group">
+          <label for="edit-user-nim">NIM</label>
+
+          <input
+            type="text"
+            id="edit-user-nim"
+            readonly
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="edit-user-name">Nama</label>
+
+          <input
+            type="text"
+            id="edit-user-name"
+            maxlength="100"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="edit-user-role">Role</label>
+
+          <select id="edit-user-role" required>
+            <option value="praktikan">Praktikan</option>
+            <option value="asisten">Asisten</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+
+        <div id="edit-user-message" class="message"></div>
+
+        <div class="modal-actions">
+          <button
+            type="button"
+            class="btn-secondary"
+            data-close-modal="edit-user-modal"
+          >
+            Batal
+          </button>
+
+          <button
+            type="submit"
+            class="btn-primary"
+          >
+            Simpan Perubahan
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- =========================================
+       MODAL TAMBAH PRAKTIKUM
+  ========================================== -->
+
+  <div class="modal" id="add-practical-modal">
+
+    <div class="modal-box">
+
+      <h2>Tambah Praktikum</h2>
+
+      <p>
+        Tambahkan mata praktikum baru ke LABCONSULT.
+      </p>
+
+      <form id="add-practical-form">
+
+        <div class="form-group">
+          <label for="practical-name">
+            Nama Praktikum
+          </label>
+
+          <input
+            type="text"
+            id="practical-name"
+            maxlength="100"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="practical-description">
+            Deskripsi
+          </label>
+
+          <textarea
+            id="practical-description"
+          ></textarea>
+        </div>
+
+        <div
+          id="practical-message"
+          class="message"
+        ></div>
+
+        <div class="modal-actions">
+
+          <button
+            type="button"
+            class="btn-secondary"
+            data-close-modal="add-practical-modal"
+          >
+            Batal
+          </button>
+
+          <button
+            type="submit"
+            class="btn-primary"
+          >
+            Simpan Praktikum
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- =========================================
+       MODAL TAMBAH BAB
+  ========================================== -->
+
+  <div class="modal" id="add-chapter-modal">
+
+    <div class="modal-box">
+
+      <h2>Tambah BAB</h2>
+
+      <p>
+        Hubungkan BAB dengan Praktikum.
+      </p>
+
+      <form id="add-chapter-form">
+
+        <div class="form-group">
+          <label for="chapter-practical">
+            Praktikum
+          </label>
+
+          <select id="chapter-practical" required>
+            <option value="">
+              Pilih Praktikum
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="chapter-name">
+            Nama BAB
+          </label>
+
+          <input
+            type="text"
+            id="chapter-name"
+            maxlength="100"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="chapter-description">
+            Deskripsi
+          </label>
+
+          <textarea
+            id="chapter-description"
+          ></textarea>
+        </div>
+
+        <div
+          id="chapter-message"
+          class="message"
+        ></div>
+
+        <div class="modal-actions">
+
+          <button
+            type="button"
+            class="btn-secondary"
+            data-close-modal="add-chapter-modal"
+          >
+            Batal
+          </button>
+
+          <button
+            type="submit"
+            class="btn-primary"
+          >
+            Simpan BAB
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- =========================================
+       MODAL EDIT BAB
+  ========================================== -->
+
+  <div class="modal" id="edit-chapter-modal">
+
+    <div class="modal-box">
+
+      <h2>Edit BAB</h2>
+
+      <p>
+        Perbarui informasi BAB.
+      </p>
+
+      <form id="edit-chapter-form">
+
+        <input
+          type="hidden"
+          id="edit-chapter-id"
+        >
+
+        <div class="form-group">
+          <label for="edit-chapter-practical">
+            Praktikum
+          </label>
+
+          <select
+            id="edit-chapter-practical"
+            required
+          ></select>
+        </div>
+
+        <div class="form-group">
+          <label for="edit-chapter-name">
+            Nama BAB
+          </label>
+
+          <input
+            type="text"
+            id="edit-chapter-name"
+            maxlength="100"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="edit-chapter-description">
+            Deskripsi
+          </label>
+
+          <textarea
+            id="edit-chapter-description"
+          ></textarea>
+        </div>
+
+        <div
+          id="edit-chapter-message"
+          class="message"
+        ></div>
+
+        <div class="modal-actions">
+
+          <button
+            type="button"
+            class="btn-secondary"
+            data-close-modal="edit-chapter-modal"
+          >
+            Batal
+          </button>
+
+          <button
+            type="submit"
+            class="btn-primary"
+          >
+            Simpan Perubahan
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- =========================================
+       MODAL TUGASKAN ASISTEN
+  ========================================== -->
+
+  <div class="modal" id="add-assignment-modal">
+
+    <div class="modal-box">
+
+      <h2>Tugaskan Asisten</h2>
+
+      <p>
+        Tentukan Asisten untuk sebuah Praktikum.
+      </p>
+
+      <form id="add-assignment-form">
+
+        <div class="form-group">
+          <label for="assignment-assistant">
+            Asisten
+          </label>
+
+          <select
+            id="assignment-assistant"
+            required
+          >
+            <option value="">
+              Pilih Asisten
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="assignment-practical">
+            Praktikum
+          </label>
+
+          <select
+            id="assignment-practical"
+            required
+          >
+            <option value="">
+              Pilih Praktikum
+            </option>
+          </select>
+        </div>
+
+        <div
+          id="add-assignment-message"
+          class="message"
+        ></div>
+
+        <div class="modal-actions">
+
+          <button
+            type="button"
+            class="btn-secondary"
+            data-close-modal="add-assignment-modal"
+          >
+            Batal
+          </button>
+
+          <button
+            type="submit"
+            class="btn-primary"
+          >
+            Simpan Penugasan
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- =========================================
+       MODAL EDIT PENUGASAN
+  ========================================== -->
+
+  <div class="modal" id="edit-assignment-modal">
+
+    <div class="modal-box">
+
+      <h2>Edit Penugasan</h2>
+
+      <p>
+        Perbarui Asisten atau Praktikum.
+      </p>
+
+      <form id="edit-assignment-form">
+
+        <input
+          type="hidden"
+          id="edit-assignment-id"
+        >
+
+        <div class="form-group">
+          <label for="edit-assignment-assistant">
+            Asisten
+          </label>
+
+          <select
+            id="edit-assignment-assistant"
+            required
+          ></select>
+        </div>
+
+        <div class="form-group">
+          <label for="edit-assignment-practical">
+            Praktikum
+          </label>
+
+          <select
+            id="edit-assignment-practical"
+            required
+          ></select>
+        </div>
+
+        <div
+          id="edit-assignment-message"
+          class="message"
+        ></div>
+
+        <div class="modal-actions">
+
+          <button
+            type="button"
+            class="btn-secondary"
+            data-close-modal="edit-assignment-modal"
+          >
+            Batal
+          </button>
+
+          <button
+            type="submit"
+            class="btn-primary"
+          >
+            Simpan Perubahan
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- =========================================
+       MODAL NOTES
+  ========================================== -->
+
+  <div class="modal" id="notes-modal">
+
+    <div class="modal-box">
+
+      <h2>Catatan Konsultasi</h2>
+
+      <p id="notes-consultation-title">
+        Konsultasi
+      </p>
+
+      <form id="notes-form">
+
+        <input
+          type="hidden"
+          id="notes-consultation-id"
+        >
+
+        <div class="form-group">
+          <label for="notes-textarea">
+            Catatan
+          </label>
+
+          <textarea
+            id="notes-textarea"
+            placeholder="Tulis hasil konsultasi atau catatan penting..."
+          ></textarea>
+        </div>
+
+        <div
+          id="notes-message"
+          class="message"
+        ></div>
+
+        <div class="modal-actions">
+
+          <button
+            type="button"
+            class="btn-secondary"
+            data-close-modal="notes-modal"
+          >
+            Batal
+          </button>
+
+          <button
+            type="submit"
+            class="btn-primary"
+          >
+            Simpan Catatan
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <script>
+    /* =========================================
+       STATE
+    ========================================= */
+
+    let currentUser = null;
+
+    let users = [];
+    let practicals = [];
+    let chapters = [];
+    let assignments = [];
+    let consultations = [];
+
+
+    /* =========================================
+       HELPERS
+    ========================================= */
+
+    function escapeHtml(value) {
+      if (value === null || value === undefined) {
+        return "";
+      }
+
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+
+    function normalize(value) {
+      return String(value || "")
+        .toLowerCase()
+        .trim();
+    }
+
+
+    function formatDate(value) {
+      if (!value) {
+        return "-";
+      }
+
+      const parts = String(value).slice(0, 10).split("-");
+
+      if (parts.length !== 3) {
+        return String(value);
+      }
+
+      const date = new Date(
+        Number(parts[0]),
+        Number(parts[1]) - 1,
+        Number(parts[2])
+      );
+
+      return date.toLocaleDateString(
+        "id-ID",
+        {
+          weekday: "short",
+          day: "numeric",
+          month: "short",
+          year: "numeric"
+        }
+      );
+    }
+
+
+    function formatTimestamp(value) {
+      if (!value) {
+        return "-";
+      }
+
+      const date = new Date(value);
+
+      if (Number.isNaN(date.getTime())) {
+        return String(value);
+      }
+
+      return date.toLocaleString("id-ID");
+    }
+
+
+    function formatTime(value) {
+      if (!value) {
+        return "-";
+      }
+
+      const text = String(value);
+
+      if (text.length >= 5) {
+        return text.slice(0, 5);
+      }
+
+      return text;
+    }
+
+
+    function showError(message) {
+      const box = document.getElementById("error-box");
+
+      box.textContent = message;
+      box.classList.add("show");
+    }
+
+
+    function hideError() {
+      const box = document.getElementById("error-box");
+
+      box.textContent = "";
+      box.classList.remove("show");
+    }
+
+
+    async function getJson(response) {
+      try {
+        return await response.json();
+      } catch {
+        return {};
+      }
+    }
+
+
+    function openModal(id) {
+      const modal = document.getElementById(id);
+
+      if (modal) {
+        modal.classList.add("show");
+      }
+    }
+
+
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+
+      if (modal) {
+        modal.classList.remove("show");
+      }
+    }
+
+
+    function setMessage(id, type, text) {
+      const element = document.getElementById(id);
+
+      element.className = `message ${type || ""}`;
+      element.textContent = text || "";
+    }
+
+
+    function statusLabel(status) {
+      return {
+        pending: "Menunggu",
+        approved: "Disetujui",
+        rejected: "Ditolak",
+        completed: "Selesai",
+        cancelled: "Dibatalkan"
+      }[status] || status;
+    }
+
+
+    function statusClass(status) {
+      return {
+        pending: "badge-pending",
+        approved: "badge-approved",
+        rejected: "badge-rejected",
+        completed: "badge-completed",
+        cancelled: "badge-cancelled"
+      }[status] || "badge-cancelled";
+    }
+
+
+    async function apiRequest(url, options = {}) {
+      const response = await fetch(url, {
+        credentials: "include",
+        ...options
+      });
+
+      const data = await getJson(response);
+
+      if (!response.ok || !data.success) {
+        throw new Error(
+          data.message || `Request gagal (${response.status}).`
+        );
+      }
+
+      return data;
+    }
+
+
+    /* =========================================
+       AUTH
+    ========================================== */
+
+    async function loadCurrentUser() {
+      const response = await fetch("/me", {
+        credentials: "include"
+      });
+
+      const data = await getJson(response);
+
+      if (
+        response.status === 401 ||
+        !data.authenticated
+      ) {
+        window.location.href = "/#login";
+        return false;
+      }
+
+      if (
+        !response.ok ||
+        !data.success ||
+        !data.user
+      ) {
+        throw new Error(
+          data.message ||
+          "Gagal membaca session."
+        );
+      }
+
+      currentUser = data.user;
+
+      if (currentUser.role !== "admin") {
+        if (currentUser.role === "praktikan") {
+          window.location.href = "/dashboard.html";
+          return false;
+        }
+
+        if (currentUser.role === "asisten") {
+          window.location.href = "/asisten.html";
+          return false;
+        }
+
+        throw new Error(
+          "Akun ini bukan akun Admin."
+        );
+      }
+
+      document.getElementById(
+        "admin-greeting"
+      ).textContent =
+        `Selamat datang, ${currentUser.name} 👋`;
+
+      return true;
+    }
+
+
+    /* =========================================
+       USERS
+    ========================================== */
+
+    async function loadUsers() {
+      const data = await apiRequest("/users");
+
+      users = data.users || [];
+
+      document.getElementById(
+        "total-users"
+      ).textContent = users.length;
+
+      document.getElementById(
+        "total-praktikan"
+      ).textContent =
+        users.filter(
+          user => user.role === "praktikan"
+        ).length;
+
+      document.getElementById(
+        "total-asisten"
+      ).textContent =
+        users.filter(
+          user => user.role === "asisten"
+        ).length;
+
+      renderUsers();
+      renderAssistantOptions();
+    }
+
+
+    function renderUsers() {
+      const tbody = document.getElementById(
+        "users-table-body"
+      );
+
+      if (!users.length) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="empty">
+              Belum ada pengguna.
+            </td>
+          </tr>
+        `;
+
+        return;
+      }
+
+      tbody.innerHTML = users.map(user => {
+        const badgeClass =
+          user.role === "praktikan"
+            ? "badge-praktikan"
+            : user.role === "asisten"
+              ? "badge-asisten"
+              : "badge-admin";
+
+        return `
+          <tr>
+            <td>${escapeHtml(user.id)}</td>
+
+            <td>
+              <strong>${escapeHtml(user.nim)}</strong>
+            </td>
+
+            <td>
+              ${escapeHtml(user.name)}
+            </td>
+
+            <td>
+              <span class="badge ${badgeClass}">
+                ${escapeHtml(user.role)}
+              </span>
+            </td>
+
+            <td>
+              ${escapeHtml(
+                formatTimestamp(user.created_at)
+              )}
+            </td>
+
+            <td>
+              <button
+                type="button"
+                class="btn-edit"
+                data-action="edit-user"
+                data-id="${escapeHtml(user.id)}"
+              >
+                Edit
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+
+    /* =========================================
+       PRACTICALS
+    ========================================== */
+
+    async function loadPracticals() {
+      const data = await apiRequest("/practicals");
+
+      practicals = data.practicals || [];
+
+      document.getElementById(
+        "total-praktikum"
+      ).textContent = practicals.length;
+
+      renderPracticals();
+      renderPracticalOptions();
+    }
+
+
+    function renderPracticals() {
+      const tbody = document.getElementById(
+        "practicals-table-body"
+      );
+
+      if (!practicals.length) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="4" class="empty">
+              Belum ada praktikum.
+            </td>
+          </tr>
+        `;
+
+        return;
+      }
+
+      tbody.innerHTML = practicals.map(practical => `
+        <tr>
+          <td>
+            ${escapeHtml(practical.id)}
+          </td>
+
+          <td>
+            <strong>
+              ${escapeHtml(practical.name)}
+            </strong>
+          </td>
+
+          <td>
+            ${escapeHtml(practical.description || "-")}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              formatTimestamp(practical.created_at)
+            )}
+          </td>
+        </tr>
+      `).join("");
+    }
+
+
+    /* =========================================
+       CHAPTERS
+    ========================================== */
+
+    async function loadChapters() {
+      const data = await apiRequest("/chapters");
+
+      chapters = data.chapters || [];
+
+      document.getElementById(
+        "total-bab"
+      ).textContent = chapters.length;
+
+      renderChapters();
+    }
+
+
+    function renderChapters() {
+      const tbody = document.getElementById(
+        "chapters-table-body"
+      );
+
+      if (!chapters.length) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="empty">
+              Belum ada BAB.
+            </td>
+          </tr>
+        `;
+
+        return;
+      }
+
+      tbody.innerHTML = chapters.map(chapter => `
+        <tr>
+          <td>
+            ${escapeHtml(chapter.id)}
+          </td>
+
+          <td>
+            ${escapeHtml(chapter.practical_name)}
+          </td>
+
+          <td>
+            <strong>
+              ${escapeHtml(chapter.name)}
+            </strong>
+          </td>
+
+          <td>
+            ${escapeHtml(chapter.description || "-")}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              formatTimestamp(chapter.created_at)
+            )}
+          </td>
+
+          <td>
+            <div class="button-group">
+
+              <button
+                type="button"
+                class="btn-edit"
+                data-action="edit-chapter"
+                data-id="${escapeHtml(chapter.id)}"
+              >
+                Edit
+              </button>
+
+              <button
+                type="button"
+                class="btn-delete"
+                data-action="delete-chapter"
+                data-id="${escapeHtml(chapter.id)}"
+              >
+                Hapus
+              </button>
+
+            </div>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+
+    /* =========================================
+       ASSIGNMENTS
+    ========================================== */
+
+    async function loadAssistantPracticals() {
+      const data = await apiRequest(
+        "/assistant-practicals"
+      );
+
+      assignments =
+        data.assistantPracticals || [];
+
+      renderAssignments();
+    }
+
+
+    function renderAssignments() {
+      const tbody = document.getElementById(
+        "assistant-practicals-table-body"
+      );
+
+      if (!assignments.length) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="empty">
+              Belum ada penugasan Asisten.
+            </td>
+          </tr>
+        `;
+
+        return;
+      }
+
+      tbody.innerHTML = assignments.map(
+        assignment => `
+          <tr>
+
+            <td>
+              ${escapeHtml(assignment.id)}
+            </td>
+
+            <td>
+              ${escapeHtml(assignment.assistant_nim)}
+            </td>
+
+            <td>
+              <strong>
+                ${escapeHtml(assignment.assistant_name)}
+              </strong>
+            </td>
+
+            <td>
+              ${escapeHtml(assignment.practical_name)}
+            </td>
+
+            <td>
+              ${escapeHtml(
+                formatTimestamp(
+                  assignment.created_at
+                )
+              )}
+            </td>
+
+            <td>
+              <div class="button-group">
+
+                <button
+                  type="button"
+                  class="btn-edit"
+                  data-action="edit-assignment"
+                  data-id="${escapeHtml(assignment.id)}"
+                >
+                  Edit
+                </button>
+
+                <button
+                  type="button"
+                  class="btn-delete"
+                  data-action="delete-assignment"
+                  data-id="${escapeHtml(assignment.id)}"
+                >
+                  Hapus
+                </button>
+
+              </div>
+            </td>
+
+          </tr>
+        `
+      ).join("");
+    }
+
+
+    /* =========================================
+       OPTIONS
+    ========================================== */
+
+    function fillSelect(
+      selectId,
+      items,
+      placeholder,
+      getValue,
+      getText
+    ) {
+      const select = document.getElementById(
+        selectId
+      );
+
+      if (!select) {
+        return;
+      }
+
+      select.innerHTML = "";
+
+      const placeholderOption =
+        document.createElement("option");
+
+      placeholderOption.value = "";
+      placeholderOption.textContent = placeholder;
+
+      select.appendChild(
+        placeholderOption
+      );
+
+      items.forEach(item => {
+        const option =
+          document.createElement("option");
+
+        option.value = getValue(item);
+        option.textContent = getText(item);
+
+        select.appendChild(option);
+      });
+    }
+
+
+    function renderPracticalOptions() {
+      const config = [
+        ["chapter-practical", "Pilih Praktikum"],
+        ["edit-chapter-practical", "Pilih Praktikum"],
+        ["assignment-practical", "Pilih Praktikum"],
+        ["edit-assignment-practical", "Pilih Praktikum"]
+      ];
+
+      config.forEach(([selectId, placeholder]) => {
+        fillSelect(
+          selectId,
+          practicals,
+          placeholder,
+          practical => practical.id,
+          practical => practical.name
+        );
+      });
+    }
+
+
+    function renderAssistantOptions() {
+      const assistants =
+        users.filter(
+          user => user.role === "asisten"
+        );
+
+      [
+        "assignment-assistant",
+        "edit-assignment-assistant"
+      ].forEach(selectId => {
+        fillSelect(
+          selectId,
+          assistants,
+          "Pilih Asisten",
+          assistant => assistant.id,
+          assistant =>
+            `${assistant.name} (${assistant.nim})`
+        );
+      });
+    }
+
+
+    /* =========================================
+       CONSULTATIONS
+    ========================================== */
+
+    async function loadConsultations() {
+      const data = await apiRequest(
+        "/consultations"
+      );
+
+      consultations =
+        data.consultations || [];
+
+      renderConsultations();
+    }
+
+
+    function getFilteredConsultations() {
+      const searchValue = normalize(
+        document.getElementById(
+          "consultation-search"
+        ).value
+      );
+
+      const statusValue =
+        document.getElementById(
+          "consultation-status-filter"
+        ).value;
+
+      return consultations.filter(
+        consultation => {
+
+          const matchesStatus =
+            statusValue === "all" ||
+            consultation.status === statusValue;
+
+          if (!matchesStatus) {
+            return false;
+          }
+
+          if (!searchValue) {
+            return true;
+          }
+
+          const searchable = [
+            consultation.id,
+            consultation.praktikan_name,
+            consultation.praktikan_nim,
+            consultation.practical_name,
+            consultation.chapter_name,
+            consultation.assistant_name,
+            consultation.assistant_nim,
+            consultation.topic,
+            consultation.question,
+            consultation.report_section,
+            consultation.notes
+          ]
+            .map(normalize)
+            .join(" ");
+
+          return searchable.includes(
+            searchValue
+          );
+        }
+      );
+    }
+
+
+    function renderConsultations() {
+      const tbody = document.getElementById(
+        "consultations-table-body"
+      );
+
+      const filtered =
+        getFilteredConsultations();
+
+      document.getElementById(
+        "consultation-result-count"
+      ).textContent =
+        `${filtered.length} dari ${consultations.length} konsultasi ditampilkan.`;
+
+      if (!filtered.length) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" class="empty">
+              Tidak ada konsultasi yang cocok dengan filter.
+            </td>
+          </tr>
+        `;
+
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(
+        consultation => {
+
+          const actions = [];
+
+          if (
+            consultation.status ===
+            "pending"
+          ) {
+            actions.push(`
+              <button
+                type="button"
+                class="btn-approve"
+                data-action="approve-consultation"
+                data-id="${escapeHtml(consultation.id)}"
+              >
+                Approve
+              </button>
+            `);
+
+            actions.push(`
+              <button
+                type="button"
+                class="btn-reject"
+                data-action="reject-consultation"
+                data-id="${escapeHtml(consultation.id)}"
+              >
+                Reject
+              </button>
+            `);
+          }
+
+          if (
+            consultation.status ===
+            "approved"
+          ) {
+            actions.push(`
+              <button
+                type="button"
+                class="btn-notes"
+                data-action="open-notes"
+                data-id="${escapeHtml(consultation.id)}"
+              >
+                Catatan
+              </button>
+            `);
+
+            actions.push(`
+              <button
+                type="button"
+                class="btn-complete"
+                data-action="complete-consultation"
+                data-id="${escapeHtml(consultation.id)}"
+              >
+                Selesai
+              </button>
+            `);
+          }
+
+          if (
+            consultation.status ===
+            "completed"
+          ) {
+            actions.push(`
+              <button
+                type="button"
+                class="btn-notes"
+                data-action="open-notes"
+                data-id="${escapeHtml(consultation.id)}"
+              >
+                Edit Catatan
+              </button>
+            `);
+          }
+
+          if (
+            consultation.status === "rejected" &&
+            consultation.rejection_reason
+          ) {
+            actions.push(`
+              <button
+                type="button"
+                class="btn-notes"
+                data-action="show-rejection"
+                data-id="${escapeHtml(consultation.id)}"
+              >
+                Alasan
+              </button>
+            `);
+          }
+
+          const attachmentHtml =
+            consultation.file_name
+              ? `
+                <div class="attachment-label">
+                  Lampiran: ${escapeHtml(
+                    consultation.file_name
+                  )}
+                </div>
+              `
+              : "";
+
+          const notesHtml =
+            consultation.notes
+              ? `
+                <div class="notes-preview">
+                  <strong>Catatan:</strong>
+                  ${escapeHtml(
+                    consultation.notes
+                  )}
+                </div>
+              `
+              : "";
+
+          return `
+            <tr>
+
+              <td data-label="ID">
+                <strong>
+                  #${escapeHtml(
+                    consultation.id
+                  )}
+                </strong>
+              </td>
+
+              <td data-label="Praktikan">
+                <strong>
+                  ${escapeHtml(
+                    consultation.praktikan_name
+                  )}
+                </strong>
+
+                <small>
+                  ${escapeHtml(
+                    consultation.praktikan_nim
+                  )}
+                </small>
+              </td>
+
+              <td data-label="Praktikum / BAB">
+                <strong>
+                  ${escapeHtml(
+                    consultation.practical_name
+                  )}
+                </strong>
+
+                <small>
+                  ${escapeHtml(
+                    consultation.chapter_name
+                  )}
+                </small>
+              </td>
+
+              <td data-label="Asisten">
+                <strong>
+                  ${escapeHtml(
+                    consultation.assistant_name
+                  )}
+                </strong>
+
+                <small>
+                  ${escapeHtml(
+                    consultation.assistant_nim
+                  )}
+                </small>
+              </td>
+
+              <td data-label="Jadwal">
+                <strong>
+                  ${escapeHtml(
+                    formatDate(
+                      consultation.consultation_date
+                    )
+                  )}
+                </strong>
+
+                <small>
+                  ${escapeHtml(
+                    formatTime(
+                      consultation.start_time
+                    )
+                  )}
+                  -
+                  ${escapeHtml(
+                    formatTime(
+                      consultation.end_time
+                    )
+                  )}
+                </small>
+
+                <small>
+                  Durasi:
+                  ${escapeHtml(
+                    consultation.duration_minutes
+                  )} menit
+                </small>
+              </td>
+
+              <td data-label="Detail">
+                <div class="consultation-detail">
+
+                  <strong>
+                    ${escapeHtml(
+                      consultation.topic
+                    )}
+                  </strong>
+
+                  <p>
+                    ${escapeHtml(
+                      consultation.question
+                    )}
+                  </p>
+
+                  ${
+                    consultation.report_section
+                      ? `
+                        <div class="detail-meta">
+                          Bagian laporan:
+                          <strong>
+                            ${escapeHtml(
+                              consultation.report_section
+                            )}
+                          </strong>
+                        </div>
+                      `
+                      : ""
+                  }
+
+                  ${attachmentHtml}
+
+                  ${notesHtml}
+
+                  ${
+                    consultation.rejection_reason
+                      ? `
+                        <div class="detail-meta">
+                          Alasan penolakan:
+                          <strong>
+                            ${escapeHtml(
+                              consultation.rejection_reason
+                            )}
+                          </strong>
+                        </div>
+                      `
+                      : ""
+                  }
+
+                </div>
+              </td>
+
+              <td data-label="Status">
+                <span class="badge ${statusClass(
+                  consultation.status
+                )}">
+                  ${escapeHtml(
+                    statusLabel(
+                      consultation.status
+                    )
+                  )}
+                </span>
+              </td>
+
+              <td data-label="Aksi">
+                <div class="button-group">
+                  ${
+                    actions.length
+                      ? actions.join("")
+                      : "<small>Tidak ada aksi.</small>"
+                  }
+                </div>
+              </td>
+
+            </tr>
+          `;
+        }
+      ).join("");
+    }
+
+
+    /* =========================================
+       ADD USER
+    ========================================== */
+
+    document
+      .getElementById("add-user-button")
+      .addEventListener(
+        "click",
+        () => {
+
+          document
+            .getElementById("add-user-form")
+            .reset();
+
+          setMessage(
+            "add-user-message",
+            "",
+            ""
+          );
+
+          openModal("add-user-modal");
+        }
+      );
+
+
+    document
+      .getElementById("add-user-form")
+      .addEventListener(
+        "submit",
+        async event => {
+
+          event.preventDefault();
+
+          const nim =
+            document
+              .getElementById("add-nim")
+              .value
+              .trim();
+
+          const name =
+            document
+              .getElementById("add-name")
+              .value
+              .trim();
+
+          const password =
+            document
+              .getElementById("add-password")
+              .value;
+
+          const role =
+            document
+              .getElementById("add-role")
+              .value;
+
+          setMessage(
+            "add-user-message",
+            "info",
+            "Menyimpan pengguna..."
+          );
+
+          try {
+
+            await apiRequest(
+              "/users",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+                body: JSON.stringify({
+                  nim,
+                  name,
+                  password,
+                  role
+                })
+              }
+            );
+
+            setMessage(
+              "add-user-message",
+              "success",
+              "Pengguna berhasil dibuat."
+            );
+
+            await loadUsers();
+
+            setTimeout(() => {
+              closeModal("add-user-modal");
+            }, 500);
+
+          } catch (error) {
+
+            setMessage(
+              "add-user-message",
+              "error",
+              error.message
+            );
+          }
+        }
+      );
+
+
+    /* =========================================
+       EDIT USER
+    ========================================== */
+
+    function openEditUserModal(id) {
+      const user = users.find(
+        item => Number(item.id) === Number(id)
+      );
+
+      if (!user) {
+        window.alert(
+          "Pengguna tidak ditemukan."
+        );
+        return;
+      }
+
+      document.getElementById(
+        "edit-user-id"
+      ).value = user.id;
+
+      document.getElementById(
+        "edit-user-nim"
+      ).value = user.nim;
+
+      document.getElementById(
+        "edit-user-name"
+      ).value = user.name;
+
+      document.getElementById(
+        "edit-user-role"
+      ).value = user.role;
+
+      setMessage(
+        "edit-user-message",
+        "",
+        ""
+      );
+
+      openModal("edit-user-modal");
+    }
+
+
+    document
+      .getElementById("edit-user-form")
+      .addEventListener(
+        "submit",
+        async event => {
+
+          event.preventDefault();
+
+          const id =
+            document.getElementById(
+              "edit-user-id"
+            ).value;
+
+          const name =
+            document.getElementById(
+              "edit-user-name"
+            ).value.trim();
+
+          const role =
+            document.getElementById(
+              "edit-user-role"
+            ).value;
+
+          setMessage(
+            "edit-user-message",
+            "info",
+            "Menyimpan perubahan..."
+          );
+
+          try {
+
+            await apiRequest(
+              `/users/${id}`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+                body: JSON.stringify({
+                  name,
+                  role
+                })
+              }
+            );
+
+            setMessage(
+              "edit-user-message",
+              "success",
+              "Data pengguna berhasil diperbarui."
+            );
+
+            await loadUsers();
+
+            setTimeout(() => {
+              closeModal(
+                "edit-user-modal"
+              );
+            }, 500);
+
+          } catch (error) {
+
+            setMessage(
+              "edit-user-message",
+              "error",
+              error.message
+            );
+          }
+        }
+      );
+
+
+    /* =========================================
+       ADD PRACTICAL
+    ========================================== */
+
+    document
+      .getElementById(
+        "add-practical-button"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          document
+            .getElementById(
+              "add-practical-form"
+            )
+            .reset();
+
+          setMessage(
+            "practical-message",
+            "",
+            ""
+          );
+
+          openModal(
+            "add-practical-modal"
+          );
+        }
+      );
+
+
+    document
+      .getElementById(
+        "add-practical-form"
+      )
+      .addEventListener(
+        "submit",
+        async event => {
+
+          event.preventDefault();
+
+          const name =
+            document.getElementById(
+              "practical-name"
+            ).value.trim();
+
+          const description =
+            document.getElementById(
+              "practical-description"
+            ).value.trim();
+
+          setMessage(
+            "practical-message",
+            "info",
+            "Menyimpan praktikum..."
+          );
+
+          try {
+
+            await apiRequest(
+              "/practicals",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+                body: JSON.stringify({
+                  name,
+                  description
+                })
+              }
+            );
+
+            setMessage(
+              "practical-message",
+              "success",
+              "Praktikum berhasil ditambahkan."
+            );
+
+            await loadPracticals();
+
+            setTimeout(() => {
+              closeModal(
+                "add-practical-modal"
+              );
+            }, 500);
+
+          } catch (error) {
+
+            setMessage(
+              "practical-message",
+              "error",
+              error.message
+            );
+          }
+        }
+      );
+
+
+    /* =========================================
+       ADD CHAPTER
+    ========================================== */
+
+    document
+      .getElementById(
+        "add-chapter-button"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          if (!practicals.length) {
+            window.alert(
+              "Belum ada Praktikum. Tambahkan Praktikum terlebih dahulu."
+            );
+            return;
+          }
+
+          document
+            .getElementById(
+              "add-chapter-form"
+            )
+            .reset();
+
+          renderPracticalOptions();
+
+          setMessage(
+            "chapter-message",
+            "",
+            ""
+          );
+
+          openModal(
+            "add-chapter-modal"
+          );
+        }
+      );
+
+
+    document
+      .getElementById(
+        "add-chapter-form"
+      )
+      .addEventListener(
+        "submit",
+        async event => {
+
+          event.preventDefault();
+
+          const practicalId =
+            Number(
+              document.getElementById(
+                "chapter-practical"
+              ).value
+            );
+
+          const name =
+            document.getElementById(
+              "chapter-name"
+            ).value.trim();
+
+          const description =
+            document.getElementById(
+              "chapter-description"
+            ).value.trim();
+
+          setMessage(
+            "chapter-message",
+            "info",
+            "Menyimpan BAB..."
+          );
+
+          try {
+
+            await apiRequest(
+              "/chapters",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+                body: JSON.stringify({
+                  practical_id:
+                    practicalId,
+                  name,
+                  description
+                })
+              }
+            );
+
+            setMessage(
+              "chapter-message",
+              "success",
+              "BAB berhasil ditambahkan."
+            );
+
+            await loadChapters();
+
+            setTimeout(() => {
+              closeModal(
+                "add-chapter-modal"
+              );
+            }, 500);
+
+          } catch (error) {
+
+            setMessage(
+              "chapter-message",
+              "error",
+              error.message
+            );
+          }
+        }
+      );
+
+
+    /* =========================================
+       EDIT CHAPTER
+    ========================================== */
+
+    function openEditChapterModal(id) {
+      const chapter = chapters.find(
+        item => Number(item.id) === Number(id)
+      );
+
+      if (!chapter) {
+        window.alert(
+          "BAB tidak ditemukan."
+        );
+        return;
+      }
+
+      renderPracticalOptions();
+
+      document.getElementById(
+        "edit-chapter-id"
+      ).value = chapter.id;
+
+      document.getElementById(
+        "edit-chapter-practical"
+      ).value = chapter.practical_id;
+
+      document.getElementById(
+        "edit-chapter-name"
+      ).value = chapter.name;
+
+      document.getElementById(
+        "edit-chapter-description"
+      ).value =
+        chapter.description || "";
+
+      setMessage(
+        "edit-chapter-message",
+        "",
+        ""
+      );
+
+      openModal(
+        "edit-chapter-modal"
+      );
+    }
+
+
+    document
+      .getElementById(
+        "edit-chapter-form"
+      )
+      .addEventListener(
+        "submit",
+        async event => {
+
+          event.preventDefault();
+
+          const id =
+            Number(
+              document.getElementById(
+                "edit-chapter-id"
+              ).value
+            );
+
+          const practicalId =
+            Number(
+              document.getElementById(
+                "edit-chapter-practical"
+              ).value
+            );
+
+          const name =
+            document.getElementById(
+              "edit-chapter-name"
+            ).value.trim();
+
+          const description =
+            document.getElementById(
+              "edit-chapter-description"
+            ).value.trim();
+
+          setMessage(
+            "edit-chapter-message",
+            "info",
+            "Menyimpan perubahan..."
+          );
+
+          try {
+
+            await apiRequest(
+              `/chapters/${id}`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+                body: JSON.stringify({
+                  practical_id:
+                    practicalId,
+                  name,
+                  description
+                })
+              }
+            );
+
+            setMessage(
+              "edit-chapter-message",
+              "success",
+              "BAB berhasil diperbarui."
+            );
+
+            await loadChapters();
+
+            setTimeout(() => {
+              closeModal(
+                "edit-chapter-modal"
+              );
+            }, 500);
+
+          } catch (error) {
+
+            setMessage(
+              "edit-chapter-message",
+              "error",
+              error.message
+            );
+          }
+        }
+      );
+
+
+    /* =========================================
+       DELETE CHAPTER
+    ========================================== */
+
+    async function deleteChapter(id) {
+      const confirmed =
+        window.confirm(
+          "Yakin ingin menghapus BAB ini?"
+        );
+
+      if (!confirmed) {
+        return;
+      }
+
+      try {
+
+        await apiRequest(
+          `/chapters/${id}`,
+          {
+            method: "DELETE"
+          }
+        );
+
+        await loadChapters();
+
+      } catch (error) {
+
+        window.alert(
+          error.message
+        );
+      }
+    }
+
+
+    /* =========================================
+       ADD ASSIGNMENT
+    ========================================== */
+
+    document
+      .getElementById(
+        "add-assignment-button"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          if (!practicals.length) {
+            window.alert(
+              "Belum ada Praktikum."
+            );
+            return;
+          }
+
+          const assistants =
+            users.filter(
+              user => user.role === "asisten"
+            );
+
+          if (!assistants.length) {
+            window.alert(
+              "Belum ada user dengan role Asisten."
+            );
+            return;
+          }
+
+          renderPracticalOptions();
+          renderAssistantOptions();
+
+          document
+            .getElementById(
+              "add-assignment-form"
+            )
+            .reset();
+
+          setMessage(
+            "add-assignment-message",
+            "",
+            ""
+          );
+
+          openModal(
+            "add-assignment-modal"
+          );
+        }
+      );
+
+
+    document
+      .getElementById(
+        "add-assignment-form"
+      )
+      .addEventListener(
+        "submit",
+        async event => {
+
+          event.preventDefault();
+
+          const assistantId =
+            Number(
+              document.getElementById(
+                "assignment-assistant"
+              ).value
+            );
+
+          const practicalId =
+            Number(
+              document.getElementById(
+                "assignment-practical"
+              ).value
+            );
+
+          setMessage(
+            "add-assignment-message",
+            "info",
+            "Menyimpan penugasan..."
+          );
+
+          try {
+
+            await apiRequest(
+              "/assistant-practicals",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+                body: JSON.stringify({
+                  assistant_id:
+                    assistantId,
+                  practical_id:
+                    practicalId
+                })
+              }
+            );
+
+            setMessage(
+              "add-assignment-message",
+              "success",
+              "Asisten berhasil ditugaskan."
+            );
+
+            await loadAssistantPracticals();
+
+            setTimeout(() => {
+              closeModal(
+                "add-assignment-modal"
+              );
+            }, 500);
+
+          } catch (error) {
+
+            setMessage(
+              "add-assignment-message",
+              "error",
+              error.message
+            );
+          }
+        }
+      );
+
+
+    /* =========================================
+       EDIT ASSIGNMENT
+    ========================================== */
+
+    function openEditAssignmentModal(id) {
+      const assignment =
+        assignments.find(
+          item =>
+            Number(item.id) === Number(id)
+        );
+
+      if (!assignment) {
+        window.alert(
+          "Penugasan tidak ditemukan."
+        );
+        return;
+      }
+
+      renderPracticalOptions();
+      renderAssistantOptions();
+
+      document.getElementById(
+        "edit-assignment-id"
+      ).value = assignment.id;
+
+      document.getElementById(
+        "edit-assignment-assistant"
+      ).value =
+        assignment.assistant_id;
+
+      document.getElementById(
+        "edit-assignment-practical"
+      ).value =
+        assignment.practical_id;
+
+      setMessage(
+        "edit-assignment-message",
+        "",
+        ""
+      );
+
+      openModal(
+        "edit-assignment-modal"
+      );
+    }
+
+
+    document
+      .getElementById(
+        "edit-assignment-form"
+      )
+      .addEventListener(
+        "submit",
+        async event => {
+
+          event.preventDefault();
+
+          const id =
+            Number(
+              document.getElementById(
+                "edit-assignment-id"
+              ).value
+            );
+
+          const assistantId =
+            Number(
+              document.getElementById(
+                "edit-assignment-assistant"
+              ).value
+            );
+
+          const practicalId =
+            Number(
+              document.getElementById(
+                "edit-assignment-practical"
+              ).value
+            );
+
+          setMessage(
+            "edit-assignment-message",
+            "info",
+            "Menyimpan perubahan..."
+          );
+
+          try {
+
+            await apiRequest(
+              `/assistant-practicals/${id}`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+                body: JSON.stringify({
+                  assistant_id:
+                    assistantId,
+                  practical_id:
+                    practicalId
+                })
+              }
+            );
+
+            setMessage(
+              "edit-assignment-message",
+              "success",
+              "Penugasan berhasil diperbarui."
+            );
+
+            await loadAssistantPracticals();
+
+            setTimeout(() => {
+              closeModal(
+                "edit-assignment-modal"
+              );
+            }, 500);
+
+          } catch (error) {
+
+            setMessage(
+              "edit-assignment-message",
+              "error",
+              error.message
+            );
+          }
+        }
+      );
+
+
+    /* =========================================
+       DELETE ASSIGNMENT
+    ========================================== */
+
+    async function deleteAssignment(id) {
+      const confirmed =
+        window.confirm(
+          "Yakin ingin menghapus penugasan ini?"
+        );
+
+      if (!confirmed) {
+        return;
+      }
+
+      try {
+
+        await apiRequest(
+          `/assistant-practicals/${id}`,
+          {
+            method: "DELETE"
+          }
+        );
+
+        await loadAssistantPracticals();
+
+      } catch (error) {
+
+        window.alert(
+          error.message
+        );
+      }
+    }
+
+
+    /* =========================================
+       APPROVE CONSULTATION
+    ========================================== */
+
+    async function approveConsultation(id) {
+      const confirmed =
+        window.confirm(
+          `Setujui konsultasi #${id}?`
+        );
+
+      if (!confirmed) {
+        return;
+      }
+
+      try {
+
+        await apiRequest(
+          `/consultations/${id}/status`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+            body: JSON.stringify({
+              status: "approved"
+            })
+          }
+        );
+
+        await loadConsultations();
+
+      } catch (error) {
+
+        window.alert(
+          error.message
+        );
+      }
+    }
+
+
+    /* =========================================
+       REJECT CONSULTATION
+    ========================================== */
+
+    async function rejectConsultation(id) {
+      const reason =
+        window.prompt(
+          "Masukkan alasan penolakan:"
+        );
+
+      if (reason === null) {
+        return;
+      }
+
+      const trimmed = reason.trim();
+
+      if (!trimmed) {
+        window.alert(
+          "Alasan penolakan wajib diisi."
+        );
+        return;
+      }
+
+      try {
+
+        await apiRequest(
+          `/consultations/${id}/status`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+            body: JSON.stringify({
+              status: "rejected",
+              rejection_reason: trimmed
+            })
+          }
+        );
+
+        await loadConsultations();
+
+      } catch (error) {
+
+        window.alert(
+          error.message
+        );
+      }
+    }
+
+
+    /* =========================================
+       NOTES
+    ========================================== */
+
+    function openNotesModal(id) {
+      const consultation =
+        consultations.find(
+          item =>
+            Number(item.id) === Number(id)
+        );
+
+      if (!consultation) {
+        window.alert(
+          "Konsultasi tidak ditemukan."
+        );
+        return;
+      }
+
+      document.getElementById(
+        "notes-consultation-id"
+      ).value = consultation.id;
+
+      document.getElementById(
+        "notes-consultation-title"
+      ).textContent =
+        `${consultation.praktikan_name} · ${consultation.practical_name} · ${formatDate(consultation.consultation_date)}`;
+
+      document.getElementById(
+        "notes-textarea"
+      ).value =
+        consultation.notes || "";
+
+      setMessage(
+        "notes-message",
+        "",
+        ""
+      );
+
+      openModal("notes-modal");
+    }
+
+
+    document
+      .getElementById("notes-form")
+      .addEventListener(
+        "submit",
+        async event => {
+
+          event.preventDefault();
+
+          const id =
+            Number(
+              document.getElementById(
+                "notes-consultation-id"
+              ).value
+            );
+
+          const notes =
+            document.getElementById(
+              "notes-textarea"
+            ).value.trim();
+
+          setMessage(
+            "notes-message",
+            "info",
+            "Menyimpan catatan..."
+          );
+
+          try {
+
+            await apiRequest(
+              `/consultations/${id}/notes`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+                body: JSON.stringify({
+                  notes
+                })
+              }
+            );
+
+            setMessage(
+              "notes-message",
+              "success",
+              "Catatan berhasil disimpan."
+            );
+
+            await loadConsultations();
+
+            setTimeout(() => {
+              closeModal(
+                "notes-modal"
+              );
+            }, 500);
+
+          } catch (error) {
+
+            setMessage(
+              "notes-message",
+              "error",
+              error.message
+            );
+          }
+        }
+      );
+
+
+    /* =========================================
+       COMPLETE
+    ========================================== */
+
+    async function completeConsultation(id) {
+      const confirmed =
+        window.confirm(
+          `Tandai konsultasi #${id} sebagai selesai?`
+        );
+
+      if (!confirmed) {
+        return;
+      }
+
+      try {
+
+        await apiRequest(
+          `/consultations/${id}/complete`,
+          {
+            method: "PUT"
+          }
+        );
+
+        await loadConsultations();
+
+      } catch (error) {
+
+        window.alert(
+          error.message
+        );
+      }
+    }
+
+
+    /* =========================================
+       REJECTION
+    ========================================== */
+
+    function showRejection(id) {
+      const consultation =
+        consultations.find(
+          item =>
+            Number(item.id) === Number(id)
+        );
+
+      if (!consultation) {
+        return;
+      }
+
+      window.alert(
+        `Alasan penolakan:\n\n${consultation.rejection_reason || "-"}`
+      );
+    }
+
+
+    /* =========================================
+       EVENT DELEGATION
+    ========================================== */
+
+    document.addEventListener(
+      "click",
+      async event => {
+
+        const button =
+          event.target.closest(
+            "button[data-action]"
+          );
+
+        if (!button) {
+          return;
+        }
+
+        const action =
+          button.dataset.action;
+
+        const id =
+          button.dataset.id;
+
+        try {
+
+          if (action === "edit-user") {
+            openEditUserModal(id);
+            return;
+          }
+
+          if (action === "edit-chapter") {
+            openEditChapterModal(id);
+            return;
+          }
+
+          if (action === "delete-chapter") {
+            await deleteChapter(id);
+            return;
+          }
+
+          if (action === "edit-assignment") {
+            openEditAssignmentModal(id);
+            return;
+          }
+
+          if (action === "delete-assignment") {
+            await deleteAssignment(id);
+            return;
+          }
+
+          if (action === "approve-consultation") {
+            await approveConsultation(id);
+            return;
+          }
+
+          if (action === "reject-consultation") {
+            await rejectConsultation(id);
+            return;
+          }
+
+          if (action === "open-notes") {
+            openNotesModal(id);
+            return;
+          }
+
+          if (action === "complete-consultation") {
+            await completeConsultation(id);
+            return;
+          }
+
+          if (action === "show-rejection") {
+            showRejection(id);
+            return;
+          }
+
+        } catch (error) {
+          console.error(
+            "ACTION ERROR:",
+            error
+          );
+
+          window.alert(
+            error.message ||
+            "Terjadi kesalahan."
+          );
+        }
+      }
+    );
+
+
+    /* =========================================
+       CONSULTATION FILTER
+    ========================================== */
+
+    document
+      .getElementById(
+        "consultation-search"
+      )
+      .addEventListener(
+        "input",
+        renderConsultations
+      );
+
+
+    document
+      .getElementById(
+        "consultation-status-filter"
+      )
+      .addEventListener(
+        "change",
+        renderConsultations
+      );
+
+
+    document
+      .getElementById(
+        "reset-consultation-filter"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          document.getElementById(
+            "consultation-search"
+          ).value = "";
+
+          document.getElementById(
+            "consultation-status-filter"
+          ).value = "all";
+
+          renderConsultations();
+        }
+      );
+
+
+    document
+      .getElementById(
+        "refresh-consultations-button"
+      )
+      .addEventListener(
+        "click",
+        async () => {
+
+          try {
+
+            hideError();
+
+            await loadConsultations();
+
+          } catch (error) {
+
+            showError(
+              error.message
+            );
+          }
+        }
+      );
+
+
+    /* =========================================
+       CLOSE MODALS
+    ========================================== */
+
+    document
+      .querySelectorAll(
+        "[data-close-modal]"
+      )
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            closeModal(
+              button.dataset.closeModal
+            );
+
+          }
+        );
+
+      });
+
+
+    document
+      .querySelectorAll(
+        ".modal"
+      )
+      .forEach(modal => {
+
+        modal.addEventListener(
+          "click",
+          event => {
+
+            if (
+              event.target === modal
+            ) {
+              closeModal(
+                modal.id
+              );
+            }
+
+          }
+        );
+
+      });
+
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key !== "Escape"
+        ) {
+          return;
+        }
+
+        document
+          .querySelectorAll(
+            ".modal.show"
+          )
+          .forEach(modal => {
+            closeModal(modal.id);
+          });
+
+      }
+    );
+
+
+    /* =========================================
+       LOGOUT
+    ========================================== */
+
+    document
+      .getElementById("logout-link")
+      .addEventListener(
+        "click",
+        async event => {
+
+          event.preventDefault();
+
+          try {
+
+            await fetch(
+              "/logout",
+              {
+                method: "POST",
+                credentials: "include"
+              }
+            );
+
+          } catch (error) {
+
+            console.error(
+              "LOGOUT ERROR:",
+              error
+            );
+          }
+
+          window.location.href =
+            "/#login";
+        }
+      );
+
+
+    /* =========================================
+       INITIALIZE
+    ========================================== */
+
+    async function initializeAdmin() {
+
+      try {
+
+        hideError();
+
+        const authenticated =
+          await loadCurrentUser();
+
+        if (!authenticated) {
+          return;
+        }
+
+        await Promise.all([
+          loadUsers(),
+          loadPracticals(),
+          loadChapters(),
+          loadAssistantPracticals(),
+          loadConsultations()
+        ]);
+
+        renderPracticalOptions();
+        renderAssistantOptions();
+        renderConsultations();
+
+      } catch (error) {
+
+        console.error(
+          "ADMIN INITIALIZE ERROR:",
+          error
+        );
+
+        showError(
+          error.message ||
+          "Gagal memuat Admin Dashboard."
+        );
+      }
+    }
+
+
+    initializeAdmin();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,2606 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Dashboard Asisten - LABCONSULT</title>
+
+  <link
+    rel="stylesheet"
+    href="/css/style.css"
+  >
+
+  <style>
+
+    .assistant-page {
+      min-height: calc(100vh - 72px);
+      padding: 60px 0 80px;
+      background: #f5f7fb;
+    }
+
+    .assistant-header {
+      margin-bottom: 35px;
+    }
+
+    .assistant-header h1 {
+      margin-bottom: 10px;
+      font-size: 42px;
+    }
+
+    .assistant-header p {
+      color: #687286;
+      line-height: 1.6;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      padding: 24px;
+      background: #ffffff;
+      border: 1px solid #e4e8ee;
+      border-radius: 16px;
+    }
+
+    .stat-card span {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: #687286;
+    }
+
+    .stat-card strong {
+      font-size: 32px;
+    }
+
+    .section {
+      margin-top: 45px;
+    }
+
+    .section-title {
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    .request-list,
+    .schedule-list,
+    .history-list {
+      display: grid;
+      gap: 18px;
+    }
+
+    .request-card,
+    .schedule-card,
+    .history-card {
+      padding: 26px;
+      background: #ffffff;
+      border: 1px solid #e4e8ee;
+      border-radius: 16px;
+    }
+
+    .request-top,
+    .schedule-top,
+    .history-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .request-title h2,
+    .schedule-main h3,
+    .history-main h3 {
+      margin-bottom: 6px;
+      font-size: 20px;
+    }
+
+    .request-title p,
+    .schedule-main p,
+    .history-main p {
+      color: #687286;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 30px;
+      padding: 0 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .badge.pending {
+      background: #fff4dc;
+      color: #9a6700;
+    }
+
+    .badge.approved {
+      background: #e8f6ed;
+      color: #237a42;
+    }
+
+    .badge.rejected {
+      background: #fdecec;
+      color: #a83a3a;
+    }
+
+    .badge.completed {
+      background: #e7eefc;
+      color: #3159a6;
+    }
+
+    .badge.cancelled {
+      background: #edf0f4;
+      color: #687286;
+    }
+
+    .request-info,
+    .schedule-info {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      padding: 20px 0;
+      border-top: 1px solid #e8ebf0;
+      border-bottom: 1px solid #e8ebf0;
+    }
+
+    .info-item span {
+      display: block;
+      margin-bottom: 5px;
+      color: #8790a0;
+      font-size: 12px;
+    }
+
+    .info-item strong {
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .detail-box {
+      margin-top: 18px;
+      padding: 16px;
+      background: #f5f7fb;
+      border-radius: 10px;
+    }
+
+    .detail-box span {
+      display: block;
+      margin-bottom: 6px;
+      color: #8790a0;
+      font-size: 12px;
+    }
+
+    .detail-box p {
+      font-size: 14px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      margin: 0;
+    }
+
+    .file-link {
+      display: inline-block;
+      color: #3159a6;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.5;
+      text-decoration: none;
+      overflow-wrap: anywhere;
+    }
+
+    .file-link:hover {
+      text-decoration: underline;
+    }
+
+    .file-help {
+      margin-top: 6px !important;
+      color: #8790a0;
+      font-size: 12px !important;
+      line-height: 1.4 !important;
+    }
+
+    .request-actions,
+    .schedule-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn-danger {
+      background: #ffffff;
+      color: #a83a3a;
+      border: 1px solid #e4bcbc;
+    }
+
+    .btn-success {
+      background: #ffffff;
+      color: #237a42;
+      border: 1px solid #b9dfc5;
+    }
+
+    .request-actions button:disabled,
+    .schedule-actions button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .message {
+      margin-top: 15px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .message.success {
+      color: #237a42;
+    }
+
+    .message.error {
+      color: #a83a3a;
+    }
+
+    .message.info {
+      color: #3159a6;
+    }
+
+    .notes-editor {
+      margin-top: 18px;
+      padding: 18px;
+      background: #f9fafb;
+      border: 1px solid #e4e8ee;
+      border-radius: 12px;
+    }
+
+    .notes-editor label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .notes-editor textarea {
+      width: 100%;
+      min-height: 110px;
+      padding: 12px 14px;
+      border: 1px solid #dce1e8;
+      border-radius: 9px;
+      font-family: inherit;
+      font-size: 14px;
+      resize: vertical;
+      outline: none;
+      background: #ffffff;
+    }
+
+    .notes-editor textarea:focus {
+      border-color: #172033;
+    }
+
+    .notes-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+
+    .rejection-box {
+      margin-top: 16px;
+      padding: 14px 16px;
+      background: #fff7f7;
+      border: 1px solid #efcccc;
+      border-radius: 10px;
+      color: #8f3333;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .empty {
+      padding: 32px 20px;
+      text-align: center;
+      color: #8790a0;
+      background: #ffffff;
+      border: 1px dashed #d9dee7;
+      border-radius: 14px;
+      line-height: 1.6;
+    }
+
+    .loading {
+      padding: 30px;
+      text-align: center;
+      color: #687286;
+      background: #ffffff;
+      border: 1px solid #e4e8ee;
+      border-radius: 14px;
+    }
+
+    .error-box {
+      display: none;
+      margin-bottom: 25px;
+      padding: 16px;
+      background: #fff2f2;
+      border: 1px solid #efc3c3;
+      border-radius: 10px;
+      color: #a83a3a;
+      line-height: 1.5;
+    }
+
+    .error-box.show {
+      display: block;
+    }
+
+    @media (max-width: 900px) {
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .request-info,
+      .schedule-info {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+    }
+
+    @media (max-width: 600px) {
+
+      .assistant-page {
+        padding-top: 40px;
+      }
+
+      .assistant-header h1 {
+        font-size: 34px;
+      }
+
+      .request-top,
+      .schedule-top,
+      .history-top {
+        flex-direction: column;
+      }
+
+      .request-info,
+      .schedule-info {
+        grid-template-columns: 1fr;
+      }
+
+      .request-actions,
+      .schedule-actions {
+        flex-direction: column;
+      }
+
+      .request-actions .btn,
+      .schedule-actions .btn {
+        width: 100%;
+        text-align: center;
+      }
+
+      .notes-actions .btn {
+        width: 100%;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- NAVBAR -->
+
+  <header class="navbar">
+
+    <div class="container navbar-content">
+
+      <a
+        href="/asisten.html"
+        class="logo"
+      >
+        LABCONSULT
+      </a>
+
+
+      <nav class="nav-menu">
+
+        <a href="/asisten.html">
+          Dashboard
+        </a>
+
+        <a href="/calendar.html">
+          Jadwal
+        </a>
+
+        <a
+          href="/"
+          id="logout-link"
+        >
+          Logout
+        </a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <!-- MAIN -->
+
+  <main class="assistant-page">
+
+    <div class="container">
+
+
+      <!-- HEADER -->
+
+      <div class="assistant-header">
+
+        <p class="eyebrow">
+          DASHBOARD ASISTEN
+        </p>
+
+        <h1 id="assistant-greeting">
+          Selamat datang 👋
+        </h1>
+
+        <p>
+          Kelola permintaan konsultasi,
+          jadwal, dan riwayat konsultasi kamu.
+        </p>
+
+      </div>
+
+
+      <!-- ERROR -->
+
+      <div
+        id="error-box"
+        class="error-box"
+      ></div>
+
+
+      <!-- STATS -->
+
+      <div class="stats-grid">
+
+        <div class="stat-card">
+
+          <span>
+            Menunggu Persetujuan
+          </span>
+
+          <strong id="pending-count">
+            0
+          </strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <span>
+            Konsultasi Hari Ini
+          </span>
+
+          <strong id="today-count">
+            0
+          </strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <span>
+            Konsultasi Selesai
+          </span>
+
+          <strong id="completed-count">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- REQUEST -->
+
+      <section class="section">
+
+        <h2 class="section-title">
+          Permintaan Konsultasi
+        </h2>
+
+
+        <div
+          id="request-list"
+          class="request-list"
+        >
+
+          <div class="loading">
+            Memuat permintaan konsultasi...
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- SCHEDULE -->
+
+      <section class="section">
+
+        <h2 class="section-title">
+          Jadwal Konsultasi Saya
+        </h2>
+
+
+        <div
+          id="schedule-list"
+          class="schedule-list"
+        >
+
+          <div class="loading">
+            Memuat jadwal...
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- HISTORY -->
+
+      <section class="section">
+
+        <h2 class="section-title">
+          Riwayat Konsultasi
+        </h2>
+
+
+        <div
+          id="history-list"
+          class="history-list"
+        >
+
+          <div class="loading">
+            Memuat riwayat...
+          </div>
+
+        </div>
+
+      </section>
+
+
+    </div>
+
+  </main>
+
+
+  <!-- FOOTER -->
+
+  <footer class="footer">
+
+    <div class="container">
+
+      <p>
+        © 2026 LABCONSULT
+      </p>
+
+    </div>
+
+  </footer>
+
+
+  <script>
+
+    /*
+      ==========================================
+      STATE
+      ==========================================
+    */
+
+    let currentUser = null;
+
+    let consultations = [];
+
+
+    /*
+      ==========================================
+      ELEMENT
+      ==========================================
+    */
+
+    const greeting =
+      document.getElementById(
+        "assistant-greeting"
+      );
+
+    const pendingCount =
+      document.getElementById(
+        "pending-count"
+      );
+
+    const todayCount =
+      document.getElementById(
+        "today-count"
+      );
+
+    const completedCount =
+      document.getElementById(
+        "completed-count"
+      );
+
+    const requestList =
+      document.getElementById(
+        "request-list"
+      );
+
+    const scheduleList =
+      document.getElementById(
+        "schedule-list"
+      );
+
+    const historyList =
+      document.getElementById(
+        "history-list"
+      );
+
+    const errorBox =
+      document.getElementById(
+        "error-box"
+      );
+
+    const logoutLink =
+      document.getElementById(
+        "logout-link"
+      );
+
+
+    /*
+      ==========================================
+      HELPER
+      ==========================================
+    */
+
+    function escapeHtml(value) {
+
+      if (
+        value === null ||
+        value === undefined
+      ) {
+
+        return "";
+
+      }
+
+
+      return String(value)
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+    }
+
+
+    function showError(message) {
+
+      errorBox.textContent =
+        message;
+
+      errorBox.classList.add(
+        "show"
+      );
+
+    }
+
+
+    function hideError() {
+
+      errorBox.textContent =
+        "";
+
+      errorBox.classList.remove(
+        "show"
+      );
+
+    }
+
+
+    function getTodayDate() {
+
+      const now =
+        new Date();
+
+      const year =
+        now.getFullYear();
+
+      const month =
+        String(
+          now.getMonth() + 1
+        ).padStart(
+          2,
+          "0"
+        );
+
+      const day =
+        String(
+          now.getDate()
+        ).padStart(
+          2,
+          "0"
+        );
+
+      return `${year}-${month}-${day}`;
+
+    }
+
+
+    function formatDate(value) {
+
+      if (!value) {
+
+        return "-";
+
+      }
+
+
+      const parts =
+        String(value).split("-");
+
+
+      if (
+        parts.length !== 3
+      ) {
+
+        return String(value);
+
+      }
+
+
+      const year =
+        Number(parts[0]);
+
+      const month =
+        Number(parts[1]);
+
+      const day =
+        Number(parts[2]);
+
+
+      const date =
+        new Date(
+          year,
+          month - 1,
+          day
+        );
+
+
+      return date.toLocaleDateString(
+        "id-ID",
+        {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+          year: "numeric"
+        }
+      );
+
+    }
+
+
+    function getStatusLabel(status) {
+
+      const labels = {
+
+        pending:
+          "Menunggu Persetujuan",
+
+        approved:
+          "Disetujui",
+
+        rejected:
+          "Ditolak",
+
+        cancelled:
+          "Dibatalkan",
+
+        completed:
+          "Selesai"
+
+      };
+
+
+      return (
+        labels[status] ||
+        status ||
+        "-"
+      );
+
+    }
+
+
+    function getStatusClass(status) {
+
+      const classes = {
+
+        pending:
+          "pending",
+
+        approved:
+          "approved",
+
+        rejected:
+          "rejected",
+
+        cancelled:
+          "cancelled",
+
+        completed:
+          "completed"
+
+      };
+
+
+      return (
+        classes[status] ||
+        "pending"
+      );
+
+    }
+
+
+    function getDisplayFileName(fileName) {
+
+      if (!fileName) {
+
+        return "";
+
+      }
+
+
+      const value =
+        String(fileName);
+
+
+      /*
+        Nama file dari server:
+        1790533417737-8a1751db3e4cf0eecffd3450-BERKAS_ASISTEN.docx
+
+        Kita hanya menghilangkan:
+        angka timestamp + "-" +
+        kode random 24 karakter + "-"
+      */
+
+      return value.replace(
+        /^\d+-[a-f0-9]{24}-/i,
+        ""
+      );
+
+    }
+
+
+    function emptyState(message) {
+
+      return `
+        <div class="empty">
+          ${escapeHtml(message)}
+        </div>
+      `;
+
+    }
+
+
+    async function parseJsonResponse(
+      response
+    ) {
+
+      try {
+
+        return await response.json();
+
+      } catch {
+
+        return {};
+
+      }
+
+    }
+
+
+    /*
+      ==========================================
+      LOAD CURRENT USER
+      ==========================================
+    */
+
+    async function loadCurrentUser() {
+
+      const response =
+        await fetch(
+          "/me",
+          {
+            method: "GET",
+            credentials: "include"
+          }
+        );
+
+
+      const data =
+        await parseJsonResponse(
+          response
+        );
+
+
+      if (
+        response.status === 401 ||
+        !data.authenticated
+      ) {
+
+        window.location.href =
+          "/#login";
+
+        return false;
+
+      }
+
+
+      if (
+        !response.ok ||
+        !data.success ||
+        !data.user
+      ) {
+
+        throw new Error(
+          data.message ||
+          "Gagal membaca session."
+        );
+
+      }
+
+
+      currentUser =
+        data.user;
+
+
+      if (
+        currentUser.role !==
+        "asisten"
+      ) {
+
+        if (
+          currentUser.role ===
+          "praktikan"
+        ) {
+
+          window.location.href =
+            "/dashboard.html";
+
+          return false;
+
+        }
+
+
+        if (
+          currentUser.role ===
+          "admin"
+        ) {
+
+          window.location.href =
+            "/admin.html";
+
+          return false;
+
+        }
+
+
+        throw new Error(
+          "Akun ini bukan akun Asisten."
+        );
+
+      }
+
+
+      greeting.textContent =
+        `Selamat datang, ${currentUser.name} 👋`;
+
+
+      return true;
+
+    }
+
+
+    /*
+      ==========================================
+      LOAD CONSULTATIONS
+      ==========================================
+    */
+
+    async function loadConsultations() {
+
+      const response =
+        await fetch(
+          "/consultations",
+          {
+            method: "GET",
+            credentials: "include"
+          }
+        );
+
+
+      const data =
+        await parseJsonResponse(
+          response
+        );
+
+
+      if (
+        !response.ok ||
+        !data.success
+      ) {
+
+        throw new Error(
+          data.message ||
+          "Gagal mengambil konsultasi."
+        );
+
+      }
+
+
+      /*
+        Backend sudah otomatis mengembalikan
+        konsultasi milik Asisten yang login.
+
+        Kita tetap filter sekali lagi sebagai
+        lapisan keamanan frontend.
+      */
+
+      consultations =
+        (
+          data.consultations ||
+          []
+        ).filter(
+          consultation =>
+            Number(
+              consultation.assistant_id
+            ) ===
+            Number(
+              currentUser.id
+            )
+        );
+
+
+      renderStats();
+
+      renderRequests();
+
+      renderSchedules();
+
+      renderHistory();
+
+    }
+
+
+    /*
+      ==========================================
+      RENDER STATS
+      ==========================================
+    */
+
+    function renderStats() {
+
+      const today =
+        getTodayDate();
+
+
+      const pending =
+        consultations.filter(
+          item =>
+            item.status ===
+            "pending"
+        ).length;
+
+
+      const todayTotal =
+        consultations.filter(
+          item =>
+            item.consultation_date ===
+              today &&
+            [
+              "pending",
+              "approved",
+              "completed"
+            ].includes(
+              item.status
+            )
+        ).length;
+
+
+      const completed =
+        consultations.filter(
+          item =>
+            item.status ===
+            "completed"
+        ).length;
+
+
+      pendingCount.textContent =
+        pending;
+
+      todayCount.textContent =
+        todayTotal;
+
+      completedCount.textContent =
+        completed;
+
+    }
+
+
+    /*
+      ==========================================
+      RENDER REQUESTS
+      ==========================================
+    */
+
+    function renderRequests() {
+
+      const requests =
+        consultations
+          .filter(
+            item =>
+              item.status ===
+              "pending"
+          )
+          .sort(
+            (a, b) =>
+              String(
+                a.consultation_date
+              ).localeCompare(
+                String(
+                  b.consultation_date
+                )
+              ) ||
+              String(
+                a.start_time
+              ).localeCompare(
+                String(
+                  b.start_time
+                )
+              )
+          );
+
+
+      if (
+        requests.length === 0
+      ) {
+
+        requestList.innerHTML =
+          emptyState(
+            "Belum ada permintaan konsultasi yang menunggu persetujuan."
+          );
+
+        return;
+
+      }
+
+
+      requestList.innerHTML =
+        requests.map(
+          consultation => {
+
+            return `
+              <article
+                class="request-card"
+                id="request-${consultation.id}"
+              >
+
+                <div class="request-top">
+
+                  <div class="request-title">
+
+                    <h2>
+                      ${escapeHtml(
+                        consultation.practical_name
+                      )}
+                    </h2>
+
+                    <p>
+                      ${escapeHtml(
+                        consultation.chapter_name
+                      )}
+                    </p>
+
+                  </div>
+
+                  <span class="badge pending">
+                    Menunggu Persetujuan
+                  </span>
+
+                </div>
+
+
+                <div class="request-info">
+
+                  <div class="info-item">
+
+                    <span>
+                      Praktikan
+                    </span>
+
+                    <strong>
+                      ${escapeHtml(
+                        consultation.praktikan_name
+                      )}
+                    </strong>
+
+                  </div>
+
+
+                  <div class="info-item">
+
+                    <span>
+                      Tanggal
+                    </span>
+
+                    <strong>
+                      ${escapeHtml(
+                        formatDate(
+                          consultation.consultation_date
+                        )
+                      )}
+                    </strong>
+
+                  </div>
+
+
+                  <div class="info-item">
+
+                    <span>
+                      Waktu
+                    </span>
+
+                    <strong>
+                      ${escapeHtml(
+                        consultation.start_time
+                      )}
+                      -
+                      ${escapeHtml(
+                        consultation.end_time
+                      )}
+                    </strong>
+
+                  </div>
+
+
+                  <div class="info-item">
+
+                    <span>
+                      Bagian Laporan
+                    </span>
+
+                    <strong>
+                      ${escapeHtml(
+                        consultation.report_section ||
+                        "-"
+                      )}
+                    </strong>
+
+                  </div>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                  <span>
+                    Topik
+                  </span>
+
+                  <p>
+                    ${escapeHtml(
+                      consultation.topic
+                    )}
+                  </p>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                  <span>
+                    Pertanyaan / Masalah
+                  </span>
+
+                  <p>
+                    ${escapeHtml(
+                      consultation.question
+                    )}
+                  </p>
+
+                </div>
+
+
+                ${
+                  consultation.file_name
+                    ? `
+                      <div class="detail-box">
+
+                        <span>
+                          File Pendukung
+                        </span>
+
+                        <a
+                          class="file-link"
+                          href="/consultations/${consultation.id}/file"
+                          target="_blank"
+                          rel="noopener"
+                        >
+                          ${escapeHtml(
+                            getDisplayFileName(
+                              consultation.file_name
+                            )
+                          )}
+                        </a>
+
+                        <p class="file-help">
+                          Klik nama file untuk membuka atau mengunduh.
+                        </p>
+
+                      </div>
+                    `
+                    : ""
+                }
+
+
+                <div
+                  class="request-actions"
+                >
+
+                  <button
+                    class="btn btn-primary"
+                    type="button"
+                    onclick="approveConsultation(${consultation.id})"
+                  >
+                    Approve
+                  </button>
+
+
+                  <button
+                    class="btn btn-danger"
+                    type="button"
+                    onclick="rejectConsultation(${consultation.id})"
+                  >
+                    Reject
+                  </button>
+
+                </div>
+
+
+                <p
+                  class="message"
+                  id="request-message-${consultation.id}"
+                ></p>
+
+              </article>
+            `;
+
+          }
+        ).join("");
+
+    }
+
+
+    /*
+      ==========================================
+      APPROVE
+      ==========================================
+    */
+
+    async function approveConsultation(
+      consultationId
+    ) {
+
+      const card =
+        document.getElementById(
+          `request-${consultationId}`
+        );
+
+
+      if (!card) {
+
+        return;
+
+      }
+
+
+      const buttons =
+        card.querySelectorAll(
+          ".request-actions button"
+        );
+
+
+      buttons.forEach(
+        button => {
+          button.disabled = true;
+        }
+      );
+
+
+      const message =
+        document.getElementById(
+          `request-message-${consultationId}`
+        );
+
+
+      message.className =
+        "message info";
+
+      message.textContent =
+        "Memproses persetujuan...";
+
+
+      try {
+
+        const response =
+          await fetch(
+            `/consultations/${consultationId}/status`,
+            {
+
+              method:
+                "PUT",
+
+              headers: {
+
+                "Content-Type":
+                  "application/json"
+
+              },
+
+              credentials:
+                "include",
+
+              body:
+                JSON.stringify({
+
+                  status:
+                    "approved"
+
+                })
+
+            }
+          );
+
+
+        const data =
+          await parseJsonResponse(
+            response
+          );
+
+
+        if (
+          !response.ok ||
+          !data.success
+        ) {
+
+          throw new Error(
+            data.message ||
+            "Gagal menyetujui konsultasi."
+          );
+
+        }
+
+
+        await loadConsultations();
+
+
+      } catch (error) {
+
+        console.error(
+          "APPROVE ERROR:",
+          error
+        );
+
+
+        buttons.forEach(
+          button => {
+            button.disabled = false;
+          }
+        );
+
+
+        message.className =
+          "message error";
+
+        message.textContent =
+          error.message ||
+          "Gagal menyetujui konsultasi.";
+
+      }
+
+    }
+
+
+    /*
+      ==========================================
+      REJECT
+      ==========================================
+    */
+
+    async function rejectConsultation(
+      consultationId
+    ) {
+
+      const reason =
+        window.prompt(
+          "Masukkan alasan penolakan konsultasi:"
+        );
+
+
+      if (
+        reason === null
+      ) {
+
+        return;
+
+      }
+
+
+      const trimmedReason =
+        reason.trim();
+
+
+      if (
+        !trimmedReason
+      ) {
+
+        window.alert(
+          "Alasan penolakan wajib diisi."
+        );
+
+        return;
+
+      }
+
+
+      const card =
+        document.getElementById(
+          `request-${consultationId}`
+        );
+
+
+      if (!card) {
+
+        return;
+
+      }
+
+
+      const buttons =
+        card.querySelectorAll(
+          ".request-actions button"
+        );
+
+
+      buttons.forEach(
+        button => {
+          button.disabled = true;
+        }
+      );
+
+
+      const message =
+        document.getElementById(
+          `request-message-${consultationId}`
+        );
+
+
+      message.className =
+        "message info";
+
+      message.textContent =
+        "Memproses penolakan...";
+
+
+      try {
+
+        const response =
+          await fetch(
+            `/consultations/${consultationId}/status`,
+            {
+
+              method:
+                "PUT",
+
+              headers: {
+
+                "Content-Type":
+                  "application/json"
+
+              },
+
+              credentials:
+                "include",
+
+              body:
+                JSON.stringify({
+
+                  status:
+                    "rejected",
+
+                  rejection_reason:
+                    trimmedReason
+
+                })
+
+            }
+          );
+
+
+        const data =
+          await parseJsonResponse(
+            response
+          );
+
+
+        if (
+          !response.ok ||
+          !data.success
+        ) {
+
+          throw new Error(
+            data.message ||
+            "Gagal menolak konsultasi."
+          );
+
+        }
+
+
+        await loadConsultations();
+
+
+      } catch (error) {
+
+        console.error(
+          "REJECT ERROR:",
+          error
+        );
+
+
+        buttons.forEach(
+          button => {
+            button.disabled = false;
+          }
+        );
+
+
+        message.className =
+          "message error";
+
+        message.textContent =
+          error.message ||
+          "Gagal menolak konsultasi.";
+
+      }
+
+    }
+
+
+    /*
+      ==========================================
+      RENDER SCHEDULES
+      ==========================================
+    */
+
+    function renderSchedules() {
+
+      const schedules =
+        consultations
+          .filter(
+            item =>
+              [
+                "approved"
+              ].includes(
+                item.status
+              )
+          )
+          .sort(
+            (a, b) => {
+
+              const dateCompare =
+                String(
+                  a.consultation_date
+                ).localeCompare(
+                  String(
+                    b.consultation_date
+                  )
+                );
+
+
+              if (
+                dateCompare !== 0
+              ) {
+
+                return dateCompare;
+
+              }
+
+
+              return String(
+                a.start_time
+              ).localeCompare(
+                String(
+                  b.start_time
+                )
+              );
+
+            }
+          );
+
+
+      if (
+        schedules.length === 0
+      ) {
+
+        scheduleList.innerHTML =
+          emptyState(
+            "Belum ada jadwal konsultasi yang disetujui."
+          );
+
+        return;
+
+      }
+
+
+      scheduleList.innerHTML =
+        schedules.map(
+          consultation => {
+
+            return `
+              <article
+                class="schedule-card"
+              >
+
+                <div class="schedule-top">
+
+                  <div class="schedule-main">
+
+                    <h3>
+                      ${escapeHtml(
+                        consultation.practical_name
+                      )}
+                    </h3>
+
+                    <p>
+                      ${escapeHtml(
+                        consultation.praktikan_name
+                      )}
+                      ·
+                      ${escapeHtml(
+                        consultation.chapter_name
+                      )}
+                    </p>
+
+                  </div>
+
+                  <span class="badge approved">
+                    Disetujui
+                  </span>
+
+                </div>
+
+
+                <div class="schedule-info">
+
+                  <div class="info-item">
+
+                    <span>
+                      Tanggal
+                    </span>
+
+                    <strong>
+                      ${escapeHtml(
+                        formatDate(
+                          consultation.consultation_date
+                        )
+                      )}
+                    </strong>
+
+                  </div>
+
+
+                  <div class="info-item">
+
+                    <span>
+                      Waktu
+                    </span>
+
+                    <strong>
+                      ${escapeHtml(
+                        consultation.start_time
+                      )}
+                      -
+                      ${escapeHtml(
+                        consultation.end_time
+                      )}
+                    </strong>
+
+                  </div>
+
+
+                  <div class="info-item">
+
+                    <span>
+                      Bagian Laporan
+                    </span>
+
+                    <strong>
+                      ${escapeHtml(
+                        consultation.report_section ||
+                        "-"
+                      )}
+                    </strong>
+
+                  </div>
+
+
+                  <div class="info-item">
+
+                    <span>
+                      Durasi
+                    </span>
+
+                    <strong>
+                      ${escapeHtml(
+                        consultation.duration_minutes
+                      )}
+                      menit
+                    </strong>
+
+                  </div>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                  <span>
+                    Topik
+                  </span>
+
+                  <p>
+                    ${escapeHtml(
+                      consultation.topic
+                    )}
+                  </p>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                  <span>
+                    Pertanyaan / Masalah
+                  </span>
+
+                  <p>
+                    ${escapeHtml(
+                      consultation.question
+                    )}
+                  </p>
+
+                </div>
+
+
+                ${
+                  consultation.file_name
+                    ? `
+                      <div class="detail-box">
+
+                        <span>
+                          File Pendukung
+                        </span>
+
+                        <a
+                          class="file-link"
+                          href="/consultations/${consultation.id}/file"
+                          target="_blank"
+                          rel="noopener"
+                        >
+                          ${escapeHtml(
+                            getDisplayFileName(
+                              consultation.file_name
+                            )
+                          )}
+                        </a>
+
+                        <p class="file-help">
+                          Klik nama file untuk membuka atau mengunduh.
+                        </p>
+
+                      </div>
+                    `
+                    : ""
+                }
+
+
+                <div class="notes-editor">
+
+                  <label
+                    for="notes-${consultation.id}"
+                  >
+                    Catatan Konsultasi
+                  </label>
+
+                  <textarea
+                    id="notes-${consultation.id}"
+                    placeholder="Tulis hasil konsultasi, arahan, atau catatan penting..."
+                  >${escapeHtml(
+                    consultation.notes || ""
+                  )}</textarea>
+
+
+                  <div class="notes-actions">
+
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      onclick="saveNotes(${consultation.id})"
+                    >
+                      Simpan Catatan
+                    </button>
+
+                  </div>
+
+
+                  <p
+                    class="message"
+                    id="notes-message-${consultation.id}"
+                  ></p>
+
+                </div>
+
+
+                <div class="schedule-actions">
+
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    onclick="completeConsultation(${consultation.id})"
+                  >
+                    Tandai Selesai
+                  </button>
+
+                </div>
+
+
+                <p
+                  class="message"
+                  id="complete-message-${consultation.id}"
+                ></p>
+
+              </article>
+            `;
+
+          }
+        ).join("");
+
+    }
+
+
+    /*
+      ==========================================
+      SAVE NOTES
+      ==========================================
+    */
+
+    async function saveNotes(
+      consultationId
+    ) {
+
+      const textarea =
+        document.getElementById(
+          `notes-${consultationId}`
+        );
+
+
+      const message =
+        document.getElementById(
+          `notes-message-${consultationId}`
+        );
+
+
+      if (
+        !textarea ||
+        !message
+      ) {
+
+        return;
+
+      }
+
+
+      const notes =
+        textarea.value.trim();
+
+
+      message.className =
+        "message info";
+
+      message.textContent =
+        "Menyimpan catatan...";
+
+
+      try {
+
+        const response =
+          await fetch(
+            `/consultations/${consultationId}/notes`,
+            {
+
+              method:
+                "PUT",
+
+              headers: {
+
+                "Content-Type":
+                  "application/json"
+
+              },
+
+              credentials:
+                "include",
+
+              body:
+                JSON.stringify({
+
+                  notes
+
+                })
+
+            }
+          );
+
+
+        const data =
+          await parseJsonResponse(
+            response
+          );
+
+
+        if (
+          !response.ok ||
+          !data.success
+        ) {
+
+          throw new Error(
+            data.message ||
+            "Gagal menyimpan catatan."
+          );
+
+        }
+
+
+        message.className =
+          "message success";
+
+        message.textContent =
+          "Catatan berhasil disimpan.";
+
+
+        await loadConsultations();
+
+
+      } catch (error) {
+
+        console.error(
+          "SAVE NOTES ERROR:",
+          error
+        );
+
+
+        message.className =
+          "message error";
+
+        message.textContent =
+          error.message ||
+          "Gagal menyimpan catatan.";
+
+      }
+
+    }
+
+
+    /*
+      ==========================================
+      COMPLETE
+      ==========================================
+    */
+
+    async function completeConsultation(
+      consultationId
+    ) {
+
+      const message =
+        document.getElementById(
+          `complete-message-${consultationId}`
+        );
+
+
+      const confirmed =
+        window.confirm(
+          "Tandai konsultasi ini sebagai selesai?"
+        );
+
+
+      if (!confirmed) {
+
+        return;
+
+      }
+
+
+      message.className =
+        "message info";
+
+      message.textContent =
+        "Menyelesaikan konsultasi...";
+
+
+      try {
+
+        const response =
+          await fetch(
+            `/consultations/${consultationId}/complete`,
+            {
+
+              method:
+                "PUT",
+
+              credentials:
+                "include"
+
+            }
+          );
+
+
+        const data =
+          await parseJsonResponse(
+            response
+          );
+
+
+        if (
+          !response.ok ||
+          !data.success
+        ) {
+
+          throw new Error(
+            data.message ||
+            "Gagal menyelesaikan konsultasi."
+          );
+
+        }
+
+
+        await loadConsultations();
+
+
+      } catch (error) {
+
+        console.error(
+          "COMPLETE ERROR:",
+          error
+        );
+
+
+        message.className =
+          "message error";
+
+        message.textContent =
+          error.message ||
+          "Gagal menyelesaikan konsultasi.";
+
+      }
+
+    }
+
+
+    /*
+      ==========================================
+      RENDER HISTORY
+      ==========================================
+    */
+
+    function renderHistory() {
+
+      const history =
+        consultations
+          .filter(
+            item =>
+              [
+                "rejected",
+                "completed",
+                "cancelled"
+              ].includes(
+                item.status
+              )
+          )
+          .sort(
+            (a, b) => {
+
+              const dateCompare =
+                String(
+                  b.consultation_date
+                ).localeCompare(
+                  String(
+                    a.consultation_date
+                  )
+                );
+
+
+              if (
+                dateCompare !== 0
+              ) {
+
+                return dateCompare;
+
+              }
+
+
+              return String(
+                b.start_time
+              ).localeCompare(
+                String(
+                  a.start_time
+                )
+              );
+
+            }
+          );
+
+
+      if (
+        history.length === 0
+      ) {
+
+        historyList.innerHTML =
+          emptyState(
+            "Belum ada riwayat konsultasi."
+          );
+
+        return;
+
+      }
+
+
+      historyList.innerHTML =
+        history.map(
+          consultation => {
+
+            return `
+              <article
+                class="history-card"
+              >
+
+                <div class="history-top">
+
+                  <div class="history-main">
+
+                    <h3>
+                      ${escapeHtml(
+                        consultation.practical_name
+                      )}
+                    </h3>
+
+                    <p>
+
+                      ${escapeHtml(
+                        consultation.praktikan_name
+                      )}
+
+                      ·
+
+                      ${escapeHtml(
+                        consultation.chapter_name
+                      )}
+
+                      ·
+
+                      ${escapeHtml(
+                        formatDate(
+                          consultation.consultation_date
+                        )
+                      )}
+
+                      ·
+
+                      ${escapeHtml(
+                        consultation.start_time
+                      )}
+
+                      -
+
+                      ${escapeHtml(
+                        consultation.end_time
+                      )}
+
+                    </p>
+
+                  </div>
+
+
+                  <span
+                    class="badge ${
+                      getStatusClass(
+                        consultation.status
+                      )
+                    }"
+                  >
+
+                    ${escapeHtml(
+                      getStatusLabel(
+                        consultation.status
+                      )
+                    )}
+
+                  </span>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                  <span>
+                    Topik
+                  </span>
+
+                  <p>
+                    ${escapeHtml(
+                      consultation.topic
+                    )}
+                  </p>
+
+                </div>
+
+
+                ${
+                  consultation.file_name
+                    ? `
+                      <div class="detail-box">
+
+                        <span>
+                          File Pendukung
+                        </span>
+
+                        <a
+                          class="file-link"
+                          href="/consultations/${consultation.id}/file"
+                          target="_blank"
+                          rel="noopener"
+                        >
+                          ${escapeHtml(
+                            getDisplayFileName(
+                              consultation.file_name
+                            )
+                          )}
+                        </a>
+
+                        <p class="file-help">
+                          Klik nama file untuk membuka atau mengunduh.
+                        </p>
+
+                      </div>
+                    `
+                    : ""
+                }
+
+
+                ${
+                  consultation.rejection_reason
+                    ? `
+                      <div class="rejection-box">
+
+                        <strong>
+                          Alasan Penolakan
+                        </strong>
+
+                        <br>
+
+                        ${escapeHtml(
+                          consultation.rejection_reason
+                        )}
+
+                      </div>
+                    `
+                    : ""
+                }
+
+
+                ${
+                  consultation.notes
+                    ? `
+                      <div class="detail-box">
+
+                        <span>
+                          Catatan Konsultasi
+                        </span>
+
+                        <p>
+                          ${escapeHtml(
+                            consultation.notes
+                          )}
+                        </p>
+
+                      </div>
+                    `
+                    : ""
+                }
+
+              </article>
+            `;
+
+          }
+        ).join("");
+
+    }
+
+
+    /*
+      ==========================================
+      LOGOUT
+      ==========================================
+    */
+
+    if (logoutLink) {
+
+      logoutLink.addEventListener(
+        "click",
+        async function(event) {
+
+          event.preventDefault();
+
+
+          try {
+
+            await fetch(
+              "/logout",
+              {
+                method:
+                  "POST",
+
+                credentials:
+                  "include"
+              }
+            );
+
+          } catch (error) {
+
+            console.error(
+              "LOGOUT ERROR:",
+              error
+            );
+
+          }
+
+
+          window.location.href =
+            "/#login";
+
+        }
+      );
+
+    }
+
+
+    /*
+      ==========================================
+      INITIALIZE
+      ==========================================
+    */
+
+    async function initialize() {
+
+      try {
+
+        hideError();
+
+
+        /*
+          1. Cek session dan role
+        */
+
+        const authenticated =
+          await loadCurrentUser();
+
+
+        if (!authenticated) {
+
+          return;
+
+        }
+
+
+        /*
+          2. Load konsultasi
+        */
+
+        await loadConsultations();
+
+
+      } catch (error) {
+
+        console.error(
+          "INITIALIZE ERROR:",
+          error
+        );
+
+
+        requestList.innerHTML =
+          emptyState(
+            "Data permintaan tidak dapat dimuat."
+          );
+
+
+        scheduleList.innerHTML =
+          emptyState(
+            "Data jadwal tidak dapat dimuat."
+          );
+
+
+        historyList.innerHTML =
+          emptyState(
+            "Data riwayat tidak dapat dimuat."
+          );
+
+
+        showError(
+          error.message ||
+          "Gagal memuat dashboard Asisten."
+        );
+
+      }
+
+    }
+
+
+    initialize();
+
+  </script>
+
+
+</body>
+
+</html>

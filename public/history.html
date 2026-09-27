@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Riwayat Konsultasi - LABCONSULT</title>
+
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <style>
+    .history-page {
+      min-height: calc(100vh - 72px);
+      padding: 70px 0;
+      background: #f5f7fb;
+    }
+
+    .history-header {
+      margin-bottom: 35px;
+    }
+
+    .history-header h1 {
+      margin-bottom: 10px;
+      font-size: 42px;
+    }
+
+    .history-header p {
+      color: #687286;
+    }
+
+    .history-list {
+      display: grid;
+      gap: 18px;
+    }
+
+    .history-card {
+      padding: 26px;
+      background: #ffffff;
+      border: 1px solid #e4e8ee;
+      border-radius: 16px;
+    }
+
+    .history-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .history-title h2 {
+      margin-bottom: 5px;
+      font-size: 21px;
+    }
+
+    .history-title p {
+      color: #687286;
+      font-size: 14px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .status-selesai {
+      background: #e8f6ed;
+      color: #237a42;
+    }
+
+    .status-ditolak {
+      background: #fdecec;
+      color: #a83a3a;
+    }
+
+    .status-dibatalkan {
+      background: #f1f2f4;
+      color: #687286;
+    }
+
+    .history-info {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      padding-top: 20px;
+      border-top: 1px solid #e8ebf0;
+    }
+
+    .info-item span {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 12px;
+      color: #8790a0;
+    }
+
+    .info-item strong {
+      font-size: 14px;
+    }
+
+    .history-topic {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 10px;
+      background: #f5f7fb;
+    }
+
+    .history-topic span {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 12px;
+      color: #8790a0;
+    }
+
+    .history-topic p {
+      font-size: 14px;
+    }
+
+    .empty-state {
+      display: none;
+      padding: 60px 20px;
+      text-align: center;
+      background: #ffffff;
+      border: 1px solid #e4e8ee;
+      border-radius: 16px;
+    }
+
+    .empty-state h2 {
+      margin-bottom: 10px;
+    }
+
+    .empty-state p {
+      color: #687286;
+    }
+
+    @media (max-width: 800px) {
+      .history-top {
+        flex-direction: column;
+      }
+
+      .history-info {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .history-info {
+        grid-template-columns: 1fr;
+      }
+
+      .history-header h1 {
+        font-size: 34px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+
+  <header class="navbar">
+
+    <div class="container navbar-content">
+
+      <a
+        href="/dashboard.html"
+        class="logo"
+      >
+        LABCONSULT
+      </a>
+
+      <nav class="nav-menu">
+
+        <a href="/dashboard.html">
+          Dashboard
+        </a>
+
+        <a href="/booking.html">
+          Booking
+        </a>
+
+        <a href="/calendar.html">
+          Jadwal
+        </a>
+
+        <a href="/history.html">
+          Riwayat
+        </a>
+
+        <a href="/">
+          Logout
+        </a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <!-- CONTENT -->
+
+  <main class="history-page">
+
+    <div class="container">
+
+      <div class="history-header">
+
+        <p class="eyebrow">
+          RIWAYAT KONSULTASI
+        </p>
+
+        <h1>
+          Riwayat Konsultasi
+        </h1>
+
+        <p>
+          Lihat seluruh konsultasi yang pernah kamu lakukan
+          di LABCONSULT.
+        </p>
+
+      </div>
+
+
+      <!-- HISTORY LIST -->
+
+      <div class="history-list">
+
+
+        <!-- HISTORY 1 -->
+
+        <article class="history-card">
+
+          <div class="history-top">
+
+            <div class="history-title">
+
+              <h2>
+                Fisika Dasar
+              </h2>
+
+              <p>
+                Praktikum Hantaran Listrik · Modul 2
+              </p>
+
+            </div>
+
+            <span class="status status-selesai">
+              Selesai
+            </span>
+
+          </div>
+
+
+          <div class="history-info">
+
+            <div class="info-item">
+
+              <span>
+                Asisten
+              </span>
+
+              <strong>
+                Yoga
+              </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span>
+                Tanggal
+              </span>
+
+              <strong>
+                22 September 2026
+              </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span>
+                Waktu
+              </span>
+
+              <strong>
+                10:00–11:00
+              </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span>
+                Bagian Laporan
+              </span>
+
+              <strong>
+                Pembahasan
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div class="history-topic">
+
+            <span>
+              Topik Konsultasi
+            </span>
+
+            <p>
+              Membahas hasil pengukuran dan cara
+              menyusun analisis pada bagian pembahasan.
+            </p>
+
+          </div>
+
+        </article>
+
+
+        <!-- HISTORY 2 -->
+
+        <article class="history-card">
+
+          <div class="history-top">
+
+            <div class="history-title">
+
+              <h2>
+                Pemrograman Web
+              </h2>
+
+              <p>
+                Praktikum Pemrograman Web · Modul 3
+              </p>
+
+            </div>
+
+            <span class="status status-selesai">
+              Selesai
+            </span>
+
+          </div>
+
+
+          <div class="history-info">
+
+            <div class="info-item">
+
+              <span>
+                Asisten
+              </span>
+
+              <strong>
+                Dimas
+              </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span>
+                Tanggal
+              </span>
+
+              <strong>
+                20 September 2026
+              </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span>
+                Waktu
+              </span>
+
+              <strong>
+                13:00–14:00
+              </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span>
+                Bagian Laporan
+              </span>
+
+              <strong>
+                Implementasi
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div class="history-topic">
+
+            <span>
+              Topik Konsultasi
+            </span>
+
+            <p>
+              Konsultasi mengenai struktur HTML,
+              CSS, dan implementasi halaman web.
+            </p>
+
+          </div>
+
+        </article>
+
+
+        <!-- HISTORY 3 -->
+
+        <article class="history-card">
+
+          <div class="history-top">
+
+            <div class="history-title">
+
+              <h2>
+                Kimia Dasar
+              </h2>
+
+              <p>
+                Praktikum Larutan · Modul 1
+              </p>
+
+            </div>
+
+            <span class="status status-selesai">
+              Selesai
+            </span>
+
+          </div>
+
+
+          <div class="history-info">
+
+            <div class="info-item">
+
+              <span>
+                Asisten
+              </span>
+
+              <strong>
+                Aksa
+              </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span>
+                Tanggal
+              </span>
+
+              <strong>
+                18 September 2026
+              </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span>
+                Waktu
+              </span>
+
+              <strong>
+                15:00–16:00
+              </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span>
+                Bagian Laporan
+              </span>
+
+              <strong>
+                Kesimpulan
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div class="history-topic">
+
+            <span>
+              Topik Konsultasi
+            </span>
+
+            <p>
+              Membahas hasil praktikum dan penyusunan
+              kesimpulan laporan.
+            </p>
+
+          </div>
+
+        </article>
+
+
+        <!-- HISTORY 4 -->
+
+        <article class="history-card">
+
+          <div class="history-top">
+
+            <div class="history-title">
+
+              <h2>
+                Biologi Dasar
+              </h2>
+
+              <p>
+                Praktikum Mikroskop · Modul 2
+              </p>
+
+            </div>
+
+            <span class="status status-ditolak">
+              Ditolak
+            </span>
+
+          </div>
+
+
+          <div class="history-info">
+
+            <div class="info-item">
+
+              <span>
+                Asisten
+              </span>
+
+              <strong>
+                Raya
+              </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span>
+                Tanggal
+              </span>
+
+              <strong>
+                15 September 2026
+              </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span>
+                Waktu
+              </span>
+
+              <strong>
+                14:00–15:00
+              </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span>
+                Bagian Laporan
+              </span>
+
+              <strong>
+                Hasil
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div class="history-topic">
+
+            <span>
+              Keterangan
+            </span>
+
+            <p>
+              Jadwal tidak dapat disetujui karena
+              asisten memiliki jadwal konsultasi lain.
+            </p>
+
+          </div>
+
+        </article>
+
+
+        <!-- HISTORY 5 -->
+
+        <article class="history-card">
+
+          <div class="history-top">
+
+            <div class="history-title">
+
+              <h2>
+                Algoritma dan Pemrograman
+              </h2>
+
+              <p>
+                Praktikum Algoritma · Modul 1
+              </p>
+
+            </div>
+
+            <span class="status status-dibatalkan">
+              Dibatalkan
+            </span>
+
+          </div>
+
+
+          <div class="history-info">
+
+            <div class="info-item">
+
+              <span>
+                Asisten
+              </span>
+
+              <strong>
+                Safa
+              </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span>
+                Tanggal
+              </span>
+
+              <strong>
+                12 September 2026
+              </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span>
+                Waktu
+              </span>
+
+              <strong>
+                09:00–10:00
+              </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span>
+                Bagian Laporan
+              </span>
+
+              <strong>
+                Coding
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div class="history-topic">
+
+            <span>
+              Keterangan
+            </span>
+
+            <p>
+              Konsultasi dibatalkan oleh praktikan
+              sebelum jadwal berlangsung.
+            </p>
+
+          </div>
+
+        </article>
+
+
+        <!-- HISTORY 6 -->
+
+        <article class="history-card">
+
+          <div class="history-top">
+
+            <div class="history-title">
+
+              <h2>
+                Jaringan Komputer
+              </h2>
+
+              <p>
+                Praktikum Jaringan · Modul 2
+              </p>
+
+            </div>
+
+            <span class="status status-selesai">
+              Selesai
+            </span>
+
+          </div>
+
+
+          <div class="history-info">
+
+            <div class="info-item">
+
+              <span>
+                Asisten
+              </span>
+
+              <strong>
+                Nafi
+              </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span>
+                Tanggal
+              </span>
+
+              <strong>
+                10 September 2026
+              </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span>
+                Waktu
+              </span>
+
+              <strong>
+                16:00–17:00
+              </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span>
+                Bagian Laporan
+              </span>
+
+              <strong>
+                Analisis
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div class="history-topic">
+
+            <span>
+              Topik Konsultasi
+            </span>
+
+            <p>
+              Membahas konfigurasi jaringan dan
+              analisis hasil pengujian.
+            </p>
+
+          </div>
+
+        </article>
+
+
+      </div>
+
+
+      <!-- EMPTY STATE -->
+
+      <div class="empty-state">
+
+        <h2>
+          Belum ada riwayat
+        </h2>
+
+        <p>
+          Riwayat konsultasi kamu akan muncul
+          setelah melakukan konsultasi.
+        </p>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</body>
+</html>

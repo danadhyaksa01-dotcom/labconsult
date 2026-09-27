@@ -1,0 +1,2344 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Buat Konsultasi - LABCONSULT</title>
+
+  <link
+    rel="stylesheet"
+    href="/css/style.css"
+  >
+
+  <style>
+
+    .booking-page {
+      min-height: calc(100vh - 73px);
+      background: #f5f7fb;
+      padding: 50px 0 80px;
+    }
+
+    .booking-header {
+      margin-bottom: 30px;
+    }
+
+    .booking-header h1 {
+      margin-bottom: 8px;
+      font-size: 36px;
+    }
+
+    .booking-header p {
+      color: #687286;
+    }
+
+    .booking-card {
+      width: min(760px, 100%);
+      padding: 36px;
+      background: #ffffff;
+      border: 1px solid #e4e8ee;
+      border-radius: 18px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #dce1e8;
+      border-radius: 9px;
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      background: #ffffff;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #172033;
+    }
+
+    .form-group textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .form-help {
+      margin-top: 6px;
+      color: #687286;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .file-box {
+      padding: 14px 15px;
+      background: #f9fafb;
+      border: 1px solid #e4e8ee;
+      border-radius: 9px;
+    }
+
+    .file-selected {
+      margin-top: 8px;
+      padding: 8px 10px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 7px;
+      color: #1d4ed8;
+      font-size: 12px;
+      line-height: 1.5;
+      display: none;
+      overflow-wrap: anywhere;
+    }
+
+    .file-selected.show {
+      display: block;
+    }
+
+    .section-divider {
+      margin: 30px 0;
+      border: none;
+      border-top: 1px solid #edf0f4;
+    }
+
+    .time-info {
+      padding: 14px 16px;
+      background: #f5f7fb;
+      border: 1px solid #e4e8ee;
+      border-radius: 9px;
+      color: #172033;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .time-info strong {
+      font-weight: 700;
+    }
+
+    .booking-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .form-message {
+      margin-top: 18px;
+      padding: 12px 14px;
+      border-radius: 9px;
+      font-size: 14px;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .form-message.show {
+      display: block;
+    }
+
+    .form-message.success {
+      background: #ecfdf3;
+      border: 1px solid #b7ebc6;
+      color: #166534;
+    }
+
+    .form-message.error {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #b91c1c;
+    }
+
+    .form-message.info {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+    }
+
+    .status-box {
+      margin-bottom: 24px;
+      padding: 14px 16px;
+      background: #f9fafb;
+      border: 1px solid #e4e8ee;
+      border-radius: 10px;
+      font-size: 13px;
+      color: #687286;
+      line-height: 1.6;
+    }
+
+    .status-box strong {
+      color: #172033;
+    }
+
+    @media (max-width: 700px) {
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .booking-card {
+        padding: 24px;
+      }
+
+      .booking-actions {
+        flex-direction: column-reverse;
+      }
+
+      .booking-actions .btn {
+        width: 100%;
+        text-align: center;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- =========================================
+       NAVBAR
+  ========================================== -->
+
+  <header class="navbar">
+
+    <div class="container navbar-content">
+
+      <a
+        href="/dashboard.html"
+        class="logo"
+      >
+        LABCONSULT
+      </a>
+
+
+      <nav class="nav-menu">
+
+        <a href="/dashboard.html">
+          Dashboard
+        </a>
+
+        <a href="/calendar.html">
+          Jadwal
+        </a>
+
+        <a
+          href="/"
+          id="logout-link"
+        >
+          Logout
+        </a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <!-- =========================================
+       MAIN
+  ========================================== -->
+
+  <main class="booking-page">
+
+    <div class="container">
+
+
+      <div class="booking-header">
+
+        <p class="eyebrow">
+          KONSULTASI PRAKTIKUM
+        </p>
+
+        <h1>
+          Buat Konsultasi
+        </h1>
+
+        <p>
+          Lengkapi informasi konsultasi agar asisten
+          dapat memahami kebutuhan kamu sebelum sesi berlangsung.
+        </p>
+
+      </div>
+
+
+      <form
+        class="booking-card"
+        id="booking-form"
+      >
+
+
+        <!-- =====================================
+             SESSION INFO
+        ====================================== -->
+
+        <div class="status-box">
+
+          Praktikan:
+
+          <strong id="praktikan-info">
+            Memuat...
+          </strong>
+
+          <br>
+
+          Data booking akan menggunakan akun
+          yang sedang login.
+
+        </div>
+
+
+        <!-- =====================================
+             PRAKTIKUM
+        ====================================== -->
+
+        <div class="form-group">
+
+          <label for="practical">
+            Praktikum
+          </label>
+
+          <select
+            id="practical"
+            required
+            disabled
+          >
+
+            <option value="">
+              Memuat praktikum...
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- =====================================
+             BAB + ASISTEN
+        ====================================== -->
+
+        <div class="form-row">
+
+
+          <div class="form-group">
+
+            <label for="chapter">
+              BAB
+            </label>
+
+            <select
+              id="chapter"
+              required
+              disabled
+            >
+
+              <option value="">
+                Pilih Praktikum terlebih dahulu
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="assistant">
+              Asisten
+            </label>
+
+            <select
+              id="assistant"
+              required
+              disabled
+            >
+
+              <option value="">
+                Pilih Praktikum terlebih dahulu
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <hr class="section-divider">
+
+
+        <!-- =====================================
+             BAGIAN LAPORAN
+        ====================================== -->
+
+        <div class="form-group">
+
+          <label for="report-section">
+            Bagian Laporan
+          </label>
+
+          <select
+            id="report-section"
+            required
+          >
+
+            <option value="">
+              Pilih bagian laporan
+            </option>
+
+            <option value="Dasar Teori">
+              Dasar Teori
+            </option>
+
+            <option value="Alat dan Bahan">
+              Alat dan Bahan
+            </option>
+
+            <option value="Prosedur Percobaan">
+              Prosedur Percobaan
+            </option>
+
+            <option value="Data Hasil Percobaan">
+              Data Hasil Percobaan
+            </option>
+
+            <option value="Perhitungan">
+              Perhitungan
+            </option>
+
+            <option value="Pembahasan">
+              Pembahasan
+            </option>
+
+            <option value="Kesimpulan">
+              Kesimpulan
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- =====================================
+             TOPIK
+        ====================================== -->
+
+        <div class="form-group">
+
+          <label for="topic">
+            Topik Konsultasi
+          </label>
+
+          <input
+            type="text"
+            id="topic"
+            maxlength="200"
+            placeholder="Contoh: Ketidakpastian hasil pengukuran"
+            required
+          >
+
+          <p class="form-help">
+            Tulis singkat topik yang ingin kamu konsultasikan.
+          </p>
+
+        </div>
+
+
+        <!-- =====================================
+             PERTANYAAN
+        ====================================== -->
+
+        <div class="form-group">
+
+          <label for="question">
+            Pertanyaan / Masalah
+          </label>
+
+          <textarea
+            id="question"
+            maxlength="5000"
+            placeholder="Contoh: Saya masih bingung bagaimana menentukan ketidakpastian hasil pengukuran."
+            required
+          ></textarea>
+
+          <p class="form-help">
+            Jelaskan masalah atau pertanyaan kamu sedetail mungkin
+            agar asisten dapat mempersiapkan konsultasi.
+          </p>
+
+        </div>
+
+
+        <!-- =====================================
+             FILE PENDUKUNG
+        ====================================== -->
+
+        <div class="form-group">
+
+          <label for="file">
+            File Pendukung
+          </label>
+
+          <div class="file-box">
+
+            <input
+              type="file"
+              id="file"
+              accept=".pdf,.doc,.docx"
+            >
+
+            <p class="form-help">
+              Format yang diterima: PDF, DOC, DOCX.
+              Maksimal ukuran file 10 MB.
+            </p>
+
+            <div
+              class="file-selected"
+              id="file-selected"
+              aria-live="polite"
+            ></div>
+
+          </div>
+
+        </div>
+
+
+        <hr class="section-divider">
+
+
+        <!-- =====================================
+             JADWAL
+        ====================================== -->
+
+        <div class="form-row">
+
+
+          <div class="form-group">
+
+            <label for="date">
+              Tanggal
+            </label>
+
+            <input
+              type="date"
+              id="date"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="time">
+              Jam Mulai
+            </label>
+
+            <input
+              type="time"
+              id="time"
+              required
+            >
+
+          </div>
+
+        </div>
+
+
+        <!-- =====================================
+             JAM SELESAI
+        ====================================== -->
+
+        <div class="form-group">
+
+          <label>
+            Jam Selesai
+          </label>
+
+          <div class="time-info">
+
+            Konsultasi berlangsung selama
+            <strong>1 jam</strong>.
+
+            <br>
+
+            Jam selesai:
+
+            <strong id="end-time">
+              -
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- =====================================
+             BUTTON
+        ====================================== -->
+
+        <div class="booking-actions">
+
+          <a
+            href="/dashboard.html"
+            class="btn btn-secondary"
+          >
+            Kembali
+          </a>
+
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="submit-button"
+          >
+            Kirim Konsultasi
+          </button>
+
+        </div>
+
+
+        <div
+          id="booking-message"
+          class="form-message"
+          aria-live="polite"
+        ></div>
+
+
+      </form>
+
+    </div>
+
+  </main>
+
+
+  <!-- =========================================
+       FOOTER
+  ========================================== -->
+
+  <footer class="footer">
+
+    <div class="container">
+
+      <p>
+        © 2026 LABCONSULT
+      </p>
+
+    </div>
+
+  </footer>
+
+
+  <script>
+
+    /* =========================================
+       STATE
+    ========================================== */
+
+    let currentUser = null;
+
+    let allPracticals = [];
+
+    let allChapters = [];
+
+    let allAssistantPracticals = [];
+
+    let allUsers = [];
+
+
+    /* =========================================
+       ELEMENT
+    ========================================== */
+
+    const bookingForm =
+      document.getElementById(
+        "booking-form"
+      );
+
+    const bookingMessage =
+      document.getElementById(
+        "booking-message"
+      );
+
+    const practicalSelect =
+      document.getElementById(
+        "practical"
+      );
+
+    const chapterSelect =
+      document.getElementById(
+        "chapter"
+      );
+
+    const assistantSelect =
+      document.getElementById(
+        "assistant"
+      );
+
+    const reportSectionSelect =
+      document.getElementById(
+        "report-section"
+      );
+
+    const topicInput =
+      document.getElementById(
+        "topic"
+      );
+
+    const questionInput =
+      document.getElementById(
+        "question"
+      );
+
+    const fileInput =
+      document.getElementById(
+        "file"
+      );
+
+    const fileSelected =
+      document.getElementById(
+        "file-selected"
+      );
+
+    const dateInput =
+      document.getElementById(
+        "date"
+      );
+
+    const timeInput =
+      document.getElementById(
+        "time"
+      );
+
+    const endTime =
+      document.getElementById(
+        "end-time"
+      );
+
+    const submitButton =
+      document.getElementById(
+        "submit-button"
+      );
+
+    const praktikanInfo =
+      document.getElementById(
+        "praktikan-info"
+      );
+
+    const logoutLink =
+      document.getElementById(
+        "logout-link"
+      );
+
+
+    /* =========================================
+       CONSTANT
+    ========================================== */
+
+    const MAX_FILE_SIZE =
+      10 * 1024 * 1024;
+
+    const ALLOWED_EXTENSIONS = [
+      ".pdf",
+      ".doc",
+      ".docx"
+    ];
+
+
+    /* =========================================
+       HELPER
+    ========================================== */
+
+    function escapeHtml(value) {
+
+      if (
+        value === null ||
+        value === undefined
+      ) {
+        return "";
+      }
+
+      return String(value)
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+    }
+
+
+    function showMessage(
+      message,
+      type = "info"
+    ) {
+
+      bookingMessage.textContent =
+        message;
+
+      bookingMessage.className =
+        `form-message show ${type}`;
+
+    }
+
+
+    function clearMessage() {
+
+      bookingMessage.textContent =
+        "";
+
+      bookingMessage.className =
+        "form-message";
+
+    }
+
+
+    function getTodayDate() {
+
+      const now =
+        new Date();
+
+      const year =
+        now.getFullYear();
+
+      const month =
+        String(
+          now.getMonth() + 1
+        ).padStart(
+          2,
+          "0"
+        );
+
+      const day =
+        String(
+          now.getDate()
+        ).padStart(
+          2,
+          "0"
+        );
+
+      return (
+        `${year}-${month}-${day}`
+      );
+
+    }
+
+
+    function getFileExtension(
+      fileName
+    ) {
+
+      const lastDot =
+        String(
+          fileName || ""
+        ).lastIndexOf(
+          "."
+        );
+
+      if (
+        lastDot === -1
+      ) {
+        return "";
+      }
+
+      return String(
+        fileName
+      )
+        .slice(lastDot)
+        .toLowerCase();
+
+    }
+
+
+    function formatFileSize(
+      bytes
+    ) {
+
+      if (
+        bytes < 1024
+      ) {
+        return `${bytes} B`;
+      }
+
+      if (
+        bytes < 1024 * 1024
+      ) {
+        return `${(
+          bytes / 1024
+        ).toFixed(1)} KB`;
+      }
+
+      return `${(
+        bytes /
+        (1024 * 1024)
+      ).toFixed(1)} MB`;
+
+    }
+
+
+    function showSelectedFile(
+      file
+    ) {
+
+      if (!file) {
+
+        fileSelected.textContent =
+          "";
+
+        fileSelected.classList.remove(
+          "show"
+        );
+
+        return;
+
+      }
+
+      fileSelected.textContent =
+        `File dipilih: ${file.name} (${formatFileSize(file.size)})`;
+
+      fileSelected.classList.add(
+        "show"
+      );
+
+    }
+
+
+    /* =========================================
+       FILE VALIDATION
+    ========================================== */
+
+    fileInput.addEventListener(
+      "change",
+      () => {
+
+        clearMessage();
+
+        const file =
+          fileInput.files &&
+          fileInput.files.length > 0
+            ? fileInput.files[0]
+            : null;
+
+        if (!file) {
+
+          showSelectedFile(
+            null
+          );
+
+          return;
+
+        }
+
+
+        const extension =
+          getFileExtension(
+            file.name
+          );
+
+
+        if (
+          !ALLOWED_EXTENSIONS.includes(
+            extension
+          )
+        ) {
+
+          fileInput.value =
+            "";
+
+          showSelectedFile(
+            null
+          );
+
+          showMessage(
+            "Format file tidak didukung. Gunakan PDF, DOC, atau DOCX.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        if (
+          file.size >
+          MAX_FILE_SIZE
+        ) {
+
+          fileInput.value =
+            "";
+
+          showSelectedFile(
+            null
+          );
+
+          showMessage(
+            "Ukuran file maksimal 10 MB.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        showSelectedFile(
+          file
+        );
+
+      }
+    );
+
+
+    /* =========================================
+       LOAD USER
+    ========================================== */
+
+    async function loadCurrentUser() {
+
+      const response =
+        await fetch(
+          "/me",
+          {
+            method: "GET",
+            credentials:
+              "include"
+          }
+        );
+
+
+      let data = null;
+
+
+      try {
+
+        data =
+          await response.json();
+
+      } catch {
+
+        data = null;
+
+      }
+
+
+      if (
+        response.status === 401 ||
+        !data ||
+        !data.authenticated
+      ) {
+
+        window.location.href =
+          "/#login";
+
+        return false;
+
+      }
+
+
+      if (
+        !response.ok ||
+        !data.success ||
+        !data.user
+      ) {
+
+        throw new Error(
+          data?.message ||
+          "Gagal membaca session login."
+        );
+
+      }
+
+
+      currentUser =
+        data.user;
+
+
+      if (
+        currentUser.role !==
+        "praktikan"
+      ) {
+
+        if (
+          currentUser.role ===
+          "asisten"
+        ) {
+
+          window.location.href =
+            "/asisten.html";
+
+          return false;
+
+        }
+
+
+        if (
+          currentUser.role ===
+          "admin"
+        ) {
+
+          window.location.href =
+            "/admin.html";
+
+          return false;
+
+        }
+
+
+        throw new Error(
+          "Akun ini tidak memiliki akses booking praktikan."
+        );
+
+      }
+
+
+      praktikanInfo.innerHTML =
+        `${escapeHtml(
+          currentUser.name
+        )} (${escapeHtml(
+          currentUser.nim
+        )})`;
+
+
+      return true;
+
+    }
+
+
+    /* =========================================
+       END TIME
+    ========================================== */
+
+    function calculateEndTime() {
+
+      const startTime =
+        timeInput.value;
+
+
+      if (!startTime) {
+
+        endTime.textContent =
+          "-";
+
+        return null;
+
+      }
+
+
+      const parts =
+        startTime.split(":");
+
+
+      if (
+        parts.length !== 2
+      ) {
+
+        endTime.textContent =
+          "-";
+
+        return null;
+
+      }
+
+
+      const hours =
+        Number(
+          parts[0]
+        );
+
+      const minutes =
+        Number(
+          parts[1]
+        );
+
+
+      if (
+        Number.isNaN(hours) ||
+        Number.isNaN(minutes) ||
+        hours < 0 ||
+        hours > 23 ||
+        minutes < 0 ||
+        minutes > 59
+      ) {
+
+        endTime.textContent =
+          "-";
+
+        return null;
+
+      }
+
+
+      const totalMinutes =
+        hours * 60 +
+        minutes +
+        60;
+
+
+      if (
+        totalMinutes >
+        1439
+      ) {
+
+        endTime.textContent =
+          "-";
+
+        return null;
+
+      }
+
+
+      const endHours =
+        Math.floor(
+          totalMinutes / 60
+        );
+
+      const endMinutes =
+        totalMinutes %
+        60;
+
+
+      const result =
+        `${String(
+          endHours
+        ).padStart(
+          2,
+          "0"
+        )}:${String(
+          endMinutes
+        ).padStart(
+          2,
+          "0"
+        )}`;
+
+
+      endTime.textContent =
+        result;
+
+
+      return result;
+
+    }
+
+
+    timeInput.addEventListener(
+      "change",
+      calculateEndTime
+    );
+
+    timeInput.addEventListener(
+      "input",
+      calculateEndTime
+    );
+
+
+    /* =========================================
+       LOAD PRACTICALS
+    ========================================== */
+
+    async function loadPracticals() {
+
+      const response =
+        await fetch(
+          "/practicals",
+          {
+            credentials:
+              "include"
+          }
+        );
+
+
+      let data;
+
+      try {
+
+        data =
+          await response.json();
+
+      } catch {
+
+        throw new Error(
+          "Response praktikum tidak valid."
+        );
+
+      }
+
+
+      if (
+        !response.ok ||
+        !data.success
+      ) {
+
+        throw new Error(
+          data.message ||
+          "Gagal mengambil data praktikum."
+        );
+
+      }
+
+
+      allPracticals =
+        data.practicals || [];
+
+
+      practicalSelect.innerHTML =
+        `
+          <option value="">
+            Pilih praktikum
+          </option>
+        `;
+
+
+      if (
+        allPracticals.length ===
+        0
+      ) {
+
+        practicalSelect.innerHTML =
+          `
+            <option value="">
+              Belum ada praktikum
+            </option>
+          `;
+
+        practicalSelect.disabled =
+          true;
+
+        return;
+
+      }
+
+
+      allPracticals.forEach(
+        practical => {
+
+          const option =
+            document.createElement(
+              "option"
+            );
+
+          option.value =
+            practical.id;
+
+          option.textContent =
+            practical.name;
+
+          practicalSelect.appendChild(
+            option
+          );
+
+        }
+      );
+
+
+      practicalSelect.disabled =
+        false;
+
+    }
+
+
+    /* =========================================
+       LOAD CHAPTERS
+    ========================================== */
+
+    async function loadChapters() {
+
+      const response =
+        await fetch(
+          "/chapters",
+          {
+            credentials:
+              "include"
+          }
+        );
+
+
+      let data;
+
+      try {
+
+        data =
+          await response.json();
+
+      } catch {
+
+        throw new Error(
+          "Response BAB tidak valid."
+        );
+
+      }
+
+
+      if (
+        !response.ok ||
+        !data.success
+      ) {
+
+        throw new Error(
+          data.message ||
+          "Gagal mengambil data BAB."
+        );
+
+      }
+
+
+      allChapters =
+        data.chapters || [];
+
+    }
+
+
+    /* =========================================
+       LOAD ASSISTANT ASSIGNMENTS
+    ========================================== */
+
+    async function loadAssistantPracticals() {
+
+      const response =
+        await fetch(
+          "/assistant-practicals",
+          {
+            credentials:
+              "include"
+          }
+        );
+
+
+      let data;
+
+      try {
+
+        data =
+          await response.json();
+
+      } catch {
+
+        throw new Error(
+          "Response penugasan Asisten tidak valid."
+        );
+
+      }
+
+
+      if (
+        !response.ok ||
+        !data.success
+      ) {
+
+        throw new Error(
+          data.message ||
+          "Gagal mengambil data penugasan Asisten."
+        );
+
+      }
+
+
+      allAssistantPracticals =
+        data.assistantPracticals || [];
+
+    }
+
+
+    /* =========================================
+       LOAD USERS
+    ========================================== */
+
+    async function loadUsers() {
+
+      const response =
+        await fetch(
+          "/users",
+          {
+            credentials:
+              "include"
+          }
+        );
+
+
+      let data;
+
+      try {
+
+        data =
+          await response.json();
+
+      } catch {
+
+        throw new Error(
+          "Response user tidak valid."
+        );
+
+      }
+
+
+      if (
+        !response.ok ||
+        !data.success
+      ) {
+
+        throw new Error(
+          data.message ||
+          "Gagal mengambil data pengguna."
+        );
+
+      }
+
+
+      allUsers =
+        data.users || [];
+
+    }
+
+
+    /* =========================================
+       REFRESH DEPENDENCIES
+    ========================================== */
+
+    function refreshPracticalDependencies() {
+
+      const practicalId =
+        Number(
+          practicalSelect.value
+        );
+
+
+      chapterSelect.innerHTML =
+        `
+          <option value="">
+            Pilih BAB
+          </option>
+        `;
+
+
+      assistantSelect.innerHTML =
+        `
+          <option value="">
+            Pilih asisten
+          </option>
+        `;
+
+
+      chapterSelect.disabled =
+        true;
+
+      assistantSelect.disabled =
+        true;
+
+
+      if (!practicalId) {
+
+        chapterSelect.innerHTML =
+          `
+            <option value="">
+              Pilih Praktikum terlebih dahulu
+            </option>
+          `;
+
+        assistantSelect.innerHTML =
+          `
+            <option value="">
+              Pilih Praktikum terlebih dahulu
+            </option>
+          `;
+
+        return;
+
+      }
+
+
+      /* =========================
+         BAB
+      ========================== */
+
+      const filteredChapters =
+        allChapters.filter(
+          chapter =>
+            Number(
+              chapter.practical_id
+            ) === practicalId
+        );
+
+
+      filteredChapters.forEach(
+        chapter => {
+
+          const option =
+            document.createElement(
+              "option"
+            );
+
+          option.value =
+            chapter.id;
+
+          option.textContent =
+            chapter.name;
+
+          chapterSelect.appendChild(
+            option
+          );
+
+        }
+      );
+
+
+      if (
+        filteredChapters.length >
+        0
+      ) {
+
+        chapterSelect.disabled =
+          false;
+
+      } else {
+
+        chapterSelect.innerHTML =
+          `
+            <option value="">
+              Belum ada BAB
+            </option>
+          `;
+
+      }
+
+
+      /* =========================
+         ASISTEN
+      ========================== */
+
+      const assignments =
+        allAssistantPracticals.filter(
+          assignment =>
+            Number(
+              assignment.practical_id
+            ) === practicalId
+        );
+
+
+      const uniqueAssistantIds =
+        [
+          ...new Set(
+            assignments.map(
+              assignment =>
+                Number(
+                  assignment.assistant_id
+                )
+            )
+          )
+        ];
+
+
+      uniqueAssistantIds.forEach(
+        assistantId => {
+
+          const assistant =
+            allUsers.find(
+              user =>
+                Number(
+                  user.id
+                ) ===
+                assistantId
+            );
+
+
+          if (
+            !assistant ||
+            assistant.role !==
+            "asisten"
+          ) {
+
+            return;
+
+          }
+
+
+          const option =
+            document.createElement(
+              "option"
+            );
+
+          option.value =
+            assistant.id;
+
+          option.textContent =
+            `${assistant.name} — ${assistant.nim}`;
+
+          assistantSelect.appendChild(
+            option
+          );
+
+        }
+      );
+
+
+      if (
+        assistantSelect.options.length >
+        1
+      ) {
+
+        assistantSelect.disabled =
+          false;
+
+      } else {
+
+        assistantSelect.innerHTML =
+          `
+            <option value="">
+              Belum ada asisten untuk praktikum ini
+            </option>
+          `;
+
+      }
+
+    }
+
+
+    practicalSelect.addEventListener(
+      "change",
+      () => {
+
+        clearMessage();
+
+        refreshPracticalDependencies();
+
+      }
+    );
+
+
+    /* =========================================
+       SUBMIT BOOKING
+    ========================================== */
+
+    bookingForm.addEventListener(
+      "submit",
+      async event => {
+
+        event.preventDefault();
+
+        clearMessage();
+
+
+        if (!currentUser) {
+
+          showMessage(
+            "Session login tidak ditemukan.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        const practicalId =
+          Number(
+            practicalSelect.value
+          );
+
+        const chapterId =
+          Number(
+            chapterSelect.value
+          );
+
+        const assistantId =
+          Number(
+            assistantSelect.value
+          );
+
+        const reportSection =
+          reportSectionSelect.value.trim();
+
+        const topic =
+          topicInput.value.trim();
+
+        const question =
+          questionInput.value.trim();
+
+        const consultationDate =
+          dateInput.value;
+
+        const startTime =
+          timeInput.value;
+
+        const finishTime =
+          calculateEndTime();
+
+
+        /* =========================
+           VALIDASI
+        ========================== */
+
+        if (!practicalId) {
+
+          showMessage(
+            "Silakan pilih Praktikum.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        if (!chapterId) {
+
+          showMessage(
+            "Silakan pilih BAB.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        if (!assistantId) {
+
+          showMessage(
+            "Silakan pilih Asisten.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        if (!reportSection) {
+
+          showMessage(
+            "Silakan pilih bagian laporan.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        if (!topic) {
+
+          showMessage(
+            "Silakan isi topik konsultasi.",
+            "error"
+          );
+
+          topicInput.focus();
+
+          return;
+
+        }
+
+
+        if (!question) {
+
+          showMessage(
+            "Silakan isi pertanyaan atau masalah konsultasi.",
+            "error"
+          );
+
+          questionInput.focus();
+
+          return;
+
+        }
+
+
+        if (!consultationDate) {
+
+          showMessage(
+            "Silakan pilih tanggal konsultasi.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        if (
+          !startTime ||
+          !finishTime
+        ) {
+
+          showMessage(
+            "Silakan pilih jam mulai yang menghasilkan durasi 1 jam.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        const today =
+          getTodayDate();
+
+
+        if (
+          consultationDate <
+          today
+        ) {
+
+          showMessage(
+            "Tanggal konsultasi tidak boleh berada di masa lalu.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        /* =========================
+           VALIDASI FILE
+        ========================== */
+
+        const selectedFile =
+          fileInput.files &&
+          fileInput.files.length > 0
+            ? fileInput.files[0]
+            : null;
+
+
+        if (selectedFile) {
+
+          const extension =
+            getFileExtension(
+              selectedFile.name
+            );
+
+
+          if (
+            !ALLOWED_EXTENSIONS.includes(
+              extension
+            )
+          ) {
+
+            showMessage(
+              "Format file tidak didukung. Gunakan PDF, DOC, atau DOCX.",
+              "error"
+            );
+
+            return;
+
+          }
+
+
+          if (
+            selectedFile.size >
+            MAX_FILE_SIZE
+          ) {
+
+            showMessage(
+              "Ukuran file maksimal 10 MB.",
+              "error"
+            );
+
+            return;
+
+          }
+
+        }
+
+
+        /* =========================
+           FORM DATA
+        ========================== */
+
+        const formData =
+          new FormData();
+
+
+        formData.append(
+          "assistant_id",
+          String(
+            assistantId
+          )
+        );
+
+
+        formData.append(
+          "practical_id",
+          String(
+            practicalId
+          )
+        );
+
+
+        formData.append(
+          "chapter_id",
+          String(
+            chapterId
+          )
+        );
+
+
+        formData.append(
+          "report_section",
+          reportSection
+        );
+
+
+        formData.append(
+          "topic",
+          topic
+        );
+
+
+        formData.append(
+          "question",
+          question
+        );
+
+
+        formData.append(
+          "consultation_date",
+          consultationDate
+        );
+
+
+        formData.append(
+          "start_time",
+          startTime
+        );
+
+
+        formData.append(
+          "end_time",
+          finishTime
+        );
+
+
+        formData.append(
+          "duration_minutes",
+          "60"
+        );
+
+
+        /*
+          File hanya ditambahkan apabila
+          Praktikan memilih file.
+        */
+
+        if (
+          selectedFile
+        ) {
+
+          formData.append(
+            "report_file",
+            selectedFile
+          );
+
+        }
+
+
+        /* =========================
+           SUBMIT
+        ========================== */
+
+        submitButton.disabled =
+          true;
+
+        submitButton.textContent =
+          selectedFile
+            ? "Mengupload..."
+            : "Menyimpan...";
+
+
+        showMessage(
+          selectedFile
+            ? "Mengirim booking dan file..."
+            : "Mengirim booking konsultasi...",
+          "info"
+        );
+
+
+        try {
+
+          const response =
+            await fetch(
+              "/consultations",
+              {
+                method:
+                  "POST",
+
+                credentials:
+                  "include",
+
+                body:
+                  formData
+              }
+            );
+
+
+          let data =
+            null;
+
+
+          try {
+
+            data =
+              await response.json();
+
+          } catch {
+
+            data =
+              null;
+
+          }
+
+
+          if (
+            !response.ok ||
+            !data ||
+            !data.success
+          ) {
+
+            throw new Error(
+              data?.message ||
+              "Booking konsultasi gagal."
+            );
+
+          }
+
+
+          showMessage(
+            selectedFile
+              ? "Booking berhasil dibuat dan file berhasil disimpan."
+              : "Booking berhasil dibuat dan sedang menunggu persetujuan asisten.",
+            "success"
+          );
+
+
+          /* =========================
+             RESET FORM
+          ========================== */
+
+          bookingForm.reset();
+
+
+          chapterSelect.innerHTML =
+            `
+              <option value="">
+                Pilih Praktikum terlebih dahulu
+              </option>
+            `;
+
+
+          assistantSelect.innerHTML =
+            `
+              <option value="">
+                Pilih Praktikum terlebih dahulu
+              </option>
+            `;
+
+
+          chapterSelect.disabled =
+            true;
+
+          assistantSelect.disabled =
+            true;
+
+
+          endTime.textContent =
+            "-";
+
+
+          showSelectedFile(
+            null
+          );
+
+
+          dateInput.min =
+            getTodayDate();
+
+
+        } catch (error) {
+
+          console.error(
+            "Booking error:",
+            error
+          );
+
+
+          showMessage(
+            error.message ||
+            "Tidak dapat terhubung ke server.",
+            "error"
+          );
+
+        } finally {
+
+          submitButton.disabled =
+            false;
+
+          submitButton.textContent =
+            "Kirim Konsultasi";
+
+        }
+
+      }
+    );
+
+
+    /* =========================================
+       LOGOUT
+    ========================================== */
+
+    if (logoutLink) {
+
+      logoutLink.addEventListener(
+        "click",
+        async event => {
+
+          event.preventDefault();
+
+
+          try {
+
+            await fetch(
+              "/logout",
+              {
+                method:
+                  "POST",
+
+                credentials:
+                  "include"
+              }
+            );
+
+          } catch (error) {
+
+            console.error(
+              "Logout error:",
+              error
+            );
+
+          }
+
+
+          window.location.href =
+            "/#login";
+
+        }
+      );
+
+    }
+
+
+    /* =========================================
+       TANGGAL MINIMUM
+    ========================================== */
+
+    dateInput.min =
+      getTodayDate();
+
+
+    /* =========================================
+       INITIALIZE
+    ========================================== */
+
+    async function initializeBookingPage() {
+
+      try {
+
+        showMessage(
+          "Memuat data LABCONSULT...",
+          "info"
+        );
+
+
+        /* =========================
+           SESSION
+        ========================== */
+
+        const authenticated =
+          await loadCurrentUser();
+
+
+        if (!authenticated) {
+
+          return;
+
+        }
+
+
+        /* =========================
+           MASTER DATA
+        ========================== */
+
+        await Promise.all([
+          loadPracticals(),
+          loadChapters(),
+          loadAssistantPracticals(),
+          loadUsers()
+        ]);
+
+
+        clearMessage();
+
+
+      } catch (error) {
+
+        console.error(
+          "Initialization error:",
+          error
+        );
+
+
+        showMessage(
+          error.message ||
+          "Gagal menyiapkan halaman booking.",
+          "error"
+        );
+
+      }
+
+    }
+
+
+    initializeBookingPage();
+
+  </script>
+
+</body>
+</html>
