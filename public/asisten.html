@@ -188,10 +188,10 @@
     }
 
     .detail-box p {
+      margin: 0;
       font-size: 14px;
       line-height: 1.6;
       white-space: pre-wrap;
-      margin: 0;
     }
 
     .file-link {
@@ -423,6 +423,10 @@
 
         <a href="/calendar.html">
           Jadwal
+        </a>
+
+        <a href="/change-password.html">
+          Ganti Password
         </a>
 
         <a
@@ -897,12 +901,11 @@
 
 
       /*
-        Nama file dari server:
+        Nama file server:
         1790533417737-8a1751db3e4cf0eecffd3450-BERKAS_ASISTEN.docx
 
-        Kita hanya menghilangkan:
-        angka timestamp + "-" +
-        kode random 24 karakter + "-"
+        Yang ditampilkan hanya:
+        BERKAS_ASISTEN.docx
       */
 
       return value.replace(
@@ -1079,14 +1082,6 @@
 
       }
 
-
-      /*
-        Backend sudah otomatis mengembalikan
-        konsultasi milik Asisten yang login.
-
-        Kita tetap filter sekali lagi sebagai
-        lapisan keamanan frontend.
-      */
 
       consultations =
         (
@@ -1730,11 +1725,8 @@
         consultations
           .filter(
             item =>
-              [
-                "approved"
-              ].includes(
-                item.status
-              )
+              item.status ===
+              "approved"
           )
           .sort(
             (a, b) => {

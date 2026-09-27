@@ -1481,6 +1481,218 @@ app.post(
   }
 );
 
+/* =========================================================
+   CHANGE PASSWORD
+   SEMUA ROLE
+========================================================= */
+
+app.put(
+  "/change-password",
+  requireLogin,
+  async (
+    req,
+    res,
+    next
+  ) => {
+
+    try {
+
+      const currentPassword =
+        String(
+          req.body.current_password ||
+          ""
+        );
+
+      const newPassword =
+        String(
+          req.body.new_password ||
+          ""
+        );
+
+      const confirmPassword =
+        String(
+          req.body.confirm_password ||
+          ""
+        );
+
+
+      /* =========================
+         VALIDASI
+      ========================== */
+
+      if (
+        !currentPassword ||
+        !newPassword ||
+        !confirmPassword
+      ) {
+
+        return res
+          .status(400)
+          .json({
+            success: false,
+            message:
+              "Semua kolom password wajib diisi."
+          });
+
+      }
+
+
+      if (
+        newPassword.length < 8
+      ) {
+
+        return res
+          .status(400)
+          .json({
+            success: false,
+            message:
+              "Password baru minimal 8 karakter."
+          });
+
+      }
+
+
+      if (
+        newPassword !==
+        confirmPassword
+      ) {
+
+        return res
+          .status(400)
+          .json({
+            success: false,
+            message:
+              "Konfirmasi password tidak sama."
+          });
+
+      }
+
+
+      if (
+        currentPassword ===
+        newPassword
+      ) {
+
+        return res
+          .status(400)
+          .json({
+            success: false,
+            message:
+              "Password baru harus berbeda dari password lama."
+          });
+
+      }
+
+
+      /* =========================
+         AMBIL PASSWORD LAMA
+      ========================== */
+
+      const result =
+        await pool.query(
+          `
+            SELECT
+              id,
+              password_hash
+            FROM users
+            WHERE id = $1
+            LIMIT 1
+          `,
+          [
+            req.user.id
+          ]
+        );
+
+
+      if (
+        result.rowCount ===
+        0
+      ) {
+
+        return res
+          .status(404)
+          .json({
+            success: false,
+            message:
+              "Pengguna tidak ditemukan."
+          });
+
+      }
+
+
+      const user =
+        result.rows[0];
+
+
+      /* =========================
+         CEK PASSWORD LAMA
+      ========================== */
+
+      const passwordValid =
+        await bcrypt.compare(
+          currentPassword,
+          user.password_hash
+        );
+
+
+      if (!passwordValid) {
+
+        return res
+          .status(401)
+          .json({
+            success: false,
+            message:
+              "Password lama salah."
+          });
+
+      }
+
+
+      /* =========================
+         HASH PASSWORD BARU
+      ========================== */
+
+      const newPasswordHash =
+        await bcrypt.hash(
+          newPassword,
+          12
+        );
+
+
+      /* =========================
+         UPDATE
+      ========================== */
+
+      await pool.query(
+        `
+          UPDATE users
+
+          SET
+            password_hash = $1
+
+          WHERE id = $2
+        `,
+        [
+          newPasswordHash,
+          req.user.id
+        ]
+      );
+
+
+      return res.json({
+        success: true,
+        message:
+          "Password berhasil diubah."
+      });
+
+    } catch (error) {
+
+      next(error);
+
+    }
+
+  }
+);
 
 /* =========================================================
    PRACTICALS - GET
